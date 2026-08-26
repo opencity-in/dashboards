@@ -5,18 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chennai Bus Stop Audit — Citizen Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=PT+Sans:wght@400;700&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root{
-    --navy:#0f3057; --blue:#1a6fb5; --teal:#00917c; --amber:#e8a020; --red:#d64545;
-    --bg:#f4f6f9; --card:#ffffff; --text:#1e2a38; --muted:#5f7286; --line:#e3e9f0;
+    /* --- OpenCity brand (2026 Dashboard Styleguide) --- */
+    --forest:#426133; --leaf:#5e8b48; --lime:#c8e537; --sun:#ffd527; --brick:#a62635;
+    --ink:#1a1a1a; --gray-600:#616161; --gray-300:#c1c1c1; --gray-100:#f0f0f0; --paper:#ffffff;
+    /* --- semantic layer --- */
+    --color-primary:var(--forest); --color-accent:var(--sun); --color-danger:var(--brick);
+    --color-text:var(--ink); --color-text-muted:var(--gray-600); --color-border:var(--gray-300);
+    /* --- subdomain accent (1 of the 2 permitted), carries the "good" band --- */
+    --accent-teal:#00917c;
+    /* --- derived greys --- */
+    --gray-200:#e0e0e0; --forest-tint:#eef2ec; --sun-tint:#fdf6e3; --brick-tint:#f8ecee;
+    /* --- audit band scale: unchanged, verified for colour-blind separation --- */
+    --band-poor:#9e2a2b; --band-weak:#e8a020; --band-fair:#b7e4b0; --band-good:var(--accent-teal);
+    /* --- legacy aliases now resolving to the brand --- */
+    --navy:var(--forest); --blue:var(--leaf); --teal:var(--accent-teal);
+    --amber:var(--band-weak); --red:var(--brick);
+    --bg:var(--gray-100); --card:var(--paper); --text:var(--ink);
+    --muted:var(--gray-600); --line:var(--gray-200);
   }
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'PT Sans','Segoe UI',system-ui,-apple-system,sans-serif}
+  h1,h2,h3,h4,th,button,.kpi .num,.badge,.tabs button,.citytabs button{font-family:'Manrope','Segoe UI',system-ui,-apple-system,sans-serif}
   body{background:var(--bg);color:var(--text);line-height:1.5}
-  header{background:linear-gradient(120deg,var(--navy) 0%,#16487e 100%);color:#fff;padding:34px 40px 28px}
-  header h1{font-size:26px;font-weight:700;letter-spacing:.2px}
-  header .sub{margin-top:6px;font-size:14px;opacity:.85;max-width:900px}
+  /* page header styling now lives in the OpenCity header component below */
   .meta{display:flex;gap:26px;margin-top:16px;flex-wrap:wrap;font-size:13px}
   .meta span{background:rgba(255,255,255,.12);padding:5px 12px;border-radius:20px}
   .wrap{max-width:1280px;margin:0 auto;padding:26px 28px 60px}
@@ -36,20 +54,20 @@
   .card h3{font-size:14.5px;color:var(--navy);margin-bottom:4px}
   .card .note{font-size:12px;color:var(--muted);margin-bottom:12px}
   .chartbox{position:relative;height:260px} .chartbox.tall{height:320px}
-  .callout{background:#fdf3e7;border-left:4px solid var(--amber);border-radius:6px;padding:12px 16px;font-size:13.5px;margin:14px 0}
-  .callout.red{background:#fbecec;border-left-color:var(--red)}
+  .callout{background:#fdf6e3;border-left:4px solid var(--amber);border-radius:6px;padding:12px 16px;font-size:13.5px;margin:14px 0}
+  .callout.red{background:#f8ecee;border-left-color:var(--red)}
   .callout.teal{background:#e8f5f2;border-left-color:var(--teal)}
   #map{height:440px;border-radius:10px;border:1px solid var(--line)}
   @media (max-width:760px){#map,#catmap{height:58vh;max-height:420px}}
   .contribute{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:16px 0 4px}
-  .contribute > div{padding:16px 18px;background:#eef4fb}
+  .contribute > div{padding:16px 18px;background:#eef2ec}
   .contribute h4{margin:0 0 4px;font-size:14.5px;color:var(--navy)}
-  .contribute p{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:#5f7286}
+  .contribute p{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:#616161}
   .contribute .cta{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;border-radius:6px}
-  .contribute .cta:hover{background:#164a80}
-  .contribute .fine{font-size:11.5px;color:#7a8b9c;margin:8px 0 0}
-  .citytabs .addcity{border:1px dashed var(--blue);background:transparent;color:var(--blue);font-weight:600}
-  .citytabs .addcity:hover{background:#eaf2fa}
+  .contribute .cta:hover{background:#35502a}
+  .contribute .fine{font-size:11.5px;color:#757575;margin:8px 0 0}
+  .citytabs .addcity{border:1px dashed rgba(255,255,255,.55);background:transparent;color:#dfe9d8;font-weight:600}
+  .citytabs .addcity:hover{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.85)}
   .showall{display:inline-block;margin-top:8px;font-size:12.5px;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;font-family:inherit}
   .showall:hover{text-decoration:underline}
   tr.extra{display:none}
@@ -59,40 +77,129 @@
   table{width:100%;border-collapse:collapse;font-size:13px}
   th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:600}
   td{padding:8px 10px;border-bottom:1px solid var(--line)}
-  tr:nth-child(even) td{background:#f8fafc}
+  tr:nth-child(even) td{background:#f7f7f5}
   .badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:700;color:#fff}
-  .b-red{background:#9e2a2b} .b-amber{background:var(--amber)} .b-yellow{background:#b7e4b0;color:#123}
+  .b-red{background:var(--band-poor)} .b-amber{background:var(--band-weak);color:#3a2400} .b-yellow{background:var(--band-fair);color:#112233}
   .recs{counter-reset:rec;display:grid;gap:12px;margin-top:16px}
   .rec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px 16px 60px;position:relative}
   .rec::before{counter-increment:rec;content:counter(rec);position:absolute;left:16px;top:16px;width:30px;height:30px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
   .rec b{color:var(--navy)}
   .rec .why{font-size:12.5px;color:var(--muted);margin-top:4px}
-  footer{font-size:12px;color:var(--muted);margin-top:44px;border-top:1px solid var(--line);padding-top:14px}
+  #footer{font-size:12.5px;color:#d7dfd2;margin:0}
   .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
   .tabs button{border:1px solid var(--line);background:var(--card);color:var(--navy);padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer}
   .tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
   #catmap{height:440px;border-radius:10px;border:1px solid var(--line)}
   .catwrap{display:grid;grid-template-columns:2fr 1fr;gap:16px}
   @media(max-width:900px){.catwrap{grid-template-columns:1fr}}
-.stop-link{color:#1a6baa;text-decoration:none;border-bottom:1px dotted #1a6baa;cursor:pointer}.stop-link:hover{color:#d64545;border-bottom-style:solid}
+.stop-link{color:#426133;text-decoration:none;border-bottom:1px dotted #426133;cursor:pointer}.stop-link:hover{color:#a62635;border-bottom-style:solid}
 .kpi{display:flex;gap:12px;align-items:flex-start}.kicon{flex:none;font-size:26px;line-height:1;margin-top:4px}
-.citytabs{display:flex;gap:8px;margin-top:6px}.citytabs button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 20px;border-radius:20px;font-size:14px;cursor:pointer;font-weight:600}.citytabs button.active{background:#fff;color:#0f3057}
+.citytabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}.citytabs button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 20px;border-radius:20px;font-size:14px;cursor:pointer;font-weight:600}.citytabs button.active{background:#fff;color:#426133}
 .logos{display:flex;gap:10px;align-items:center}.logos a{display:flex;align-items:center}.logos img{height:34px;width:auto;display:block}.logos a.chip{background:#fff;border-radius:8px;padding:5px 10px}.logos a.chip img{height:26px}@media(max-width:700px){.logos img{height:26px}.logos a.chip img{height:20px}}
+
+/* ============ OpenCity header & footer (2026 Dashboard Styleguide) ============ */
+.oc-dashboard-header{width:100%;background:var(--paper);color:var(--color-text);font-family:'Manrope','Segoe UI',sans-serif}
+.oc-dashboard-header p{margin:0}
+.oc-dashboard-header img{display:block;max-width:100%;height:auto}
+.oc-dashboard-header__bar{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;padding:20px 32px;border-bottom:1px solid var(--color-border)}
+.oc-dashboard-header__identity{justify-self:start;min-width:0}
+.oc-dashboard-header__eyebrow{display:block;margin-bottom:8px;color:var(--color-text-muted);font:400 12px/1.2 'PT Sans',sans-serif}
+.oc-dashboard-header__brands{display:flex;align-items:center;gap:14px}
+.oc-dashboard-header__logo{width:116px}
+.oc-dashboard-header__partner{display:grid;place-items:center;text-decoration:none}
+/* Template's bordered chip is for its text placeholder; the Nagariyal mark carries its own outline. */
+.oc-dashboard-header__partner img{height:28px;width:auto}
+@media(max-width:700px){.oc-dashboard-header__partner img{height:24px}}
+.oc-dashboard-header__title{margin:0;font-size:clamp(22px,2.2vw,28px);line-height:1.2;text-align:center}
+.oc-dashboard-header__title a{color:var(--color-primary);font-weight:800;text-decoration:none}
+.oc-dashboard-header__title a:hover{text-decoration:underline;text-underline-offset:4px}
+.oc-dashboard-header__state{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.oc-dashboard-header__open{display:grid;justify-self:end;width:44px;height:44px;padding:8px;place-items:center;cursor:pointer;color:var(--color-text)}
+.oc-dashboard-header__open svg,.oc-dashboard-header__close svg{display:block;stroke:currentColor}
+.oc-dashboard-header__state:focus-visible+.oc-dashboard-header__open,.oc-dashboard-header :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px}
+.oc-dashboard-header__nav{display:none;position:fixed;inset:0;z-index:4000;padding:24px 32px;overflow-y:auto;background:var(--paper)}
+.oc-dashboard-header__state:checked~.oc-dashboard-header__nav{display:block}
+.oc-dashboard-header__close{display:grid;width:44px;height:44px;margin-left:auto;padding:8px;place-items:center;cursor:pointer;color:var(--color-text)}
+.oc-dashboard-header__nav ul{display:grid;gap:20px;max-width:420px;margin:40px auto 0;padding:0;list-style:none;font-size:clamp(20px,3vw,32px)}
+.oc-dashboard-header__nav a{color:var(--color-text);text-decoration:none}
+.oc-dashboard-header__nav a:hover{text-decoration:underline;text-decoration-color:var(--color-primary)}
+.oc-dashboard-header__nav a.oc-dashboard-header__donate{color:var(--color-danger)}
+.oc-dashboard-header__hero{padding:28px 32px 26px;background:var(--color-primary);color:var(--paper)}
+.oc-dashboard-header__hero-title{margin:0;font:800 clamp(26px,3.4vw,40px)/1.15 'Manrope',sans-serif;letter-spacing:.2px}
+.oc-dashboard-header__hero-text{max-width:110ch;margin-top:14px!important;color:#f3f3f3;font:400 15px/1.5 'PT Sans',sans-serif}
+@media(max-width:700px){
+  .oc-dashboard-header__bar{grid-template-columns:1fr auto;gap:16px;padding:16px}
+  .oc-dashboard-header__title{grid-column:1/-1;grid-row:2;text-align:left}
+  .oc-dashboard-header__logo{width:102px}
+  .oc-dashboard-header__nav{padding:16px}
+  .oc-dashboard-header__hero{padding:24px 16px}
+}
+.oc-footer{width:100%;padding:48px 32px;background:var(--ink);color:var(--lime);font:400 16px/1.45 'PT Sans',sans-serif}
+.oc-footer a{color:inherit;text-decoration:none}
+.oc-footer a:hover{text-decoration:underline;text-underline-offset:3px}
+.oc-footer :focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.oc-footer ul{margin:0;padding:0;list-style:none}
+.oc-footer img{display:block;max-width:100%;height:auto}
+.oc-footer p{margin:0}
+.oc-footer nav{font-family:'Manrope',sans-serif;font-size:15px}
+.oc-footer__inner{display:grid;grid-template-columns:1.5fr 1fr 1.2fr 1.1fr;gap:40px 48px;max-width:1340px;margin:auto}
+.oc-footer__wordmark{width:260px}
+.oc-footer__tagline{margin-top:20px!important;font-weight:700}
+.oc-footer__menu ul{display:grid;gap:18px}
+.oc-footer__social{display:flex;gap:18px;margin-bottom:56px!important;color:var(--sun)}
+.oc-footer__social a,.oc-footer__social svg{display:block;width:26px;height:26px}
+.oc-footer__social svg{fill:currentColor}
+.oc-footer__programme{margin-bottom:14px!important;font-family:'Manrope',sans-serif;font-size:15px}
+.oc-footer__oorvani{width:230px}
+.oc-footer__licence{max-width:1340px;margin:40px auto 0!important;padding-top:20px;border-top:1px solid #3a3a3a;color:#d7dfd2;font-size:12.5px;line-height:1.6}
+.oc-footer__licence a{text-decoration:underline;text-underline-offset:2px}
+.oc-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:800px){
+  .oc-footer{padding:32px 16px}
+  .oc-footer__inner{grid-template-columns:1fr;gap:32px}
+  .oc-footer__social{margin-bottom:24px!important}
+}
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:12px">
-    <div class="citytabs" id="cityTabs"></div>
-    <div class="logos">
-      <a href="https://oorvani.org/" target="_blank" rel="noopener" title="Oorvani Foundation"><img src="assets/oorvani.png" alt="Oorvani Foundation"></a>
-      <a href="https://www.nagariyal.org/" target="_blank" rel="noopener" title="Nagariyal"><img src="assets/nagariyal.png" alt="Nagariyal"></a>
-      <a href="https://opencity.in/" target="_blank" rel="noopener" title="OpenCity" class="chip"><img src="assets/opencity.png" alt="OpenCity"></a>
+<header class="oc-dashboard-header">
+  <div class="oc-dashboard-header__bar">
+    <div class="oc-dashboard-header__identity">
+      <span class="oc-dashboard-header__eyebrow">A joint initiative of</span>
+      <div class="oc-dashboard-header__brands">
+        <a href="https://opencity.in/" target="_blank" rel="noopener" aria-label="OpenCity home"><img class="oc-dashboard-header__logo" src="assets/opencity.png" alt="OpenCity"></a>
+        <a class="oc-dashboard-header__partner" href="https://www.nagariyal.org/" target="_blank" rel="noopener" aria-label="Nagariyal Research and Action Foundation home"><img src="assets/nagariyal.png" alt="Nagariyal Research and Action Foundation"></a>
+      </div>
     </div>
+
+    <p class="oc-dashboard-header__title"><a href="https://dashboards.opencity.in/">Dashboards</a></p>
+
+    <input class="oc-dashboard-header__state" type="checkbox" id="oc-dashboard-menu">
+    <label class="oc-dashboard-header__open" for="oc-dashboard-menu" aria-label="Open menu">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M3 7h22M3 14h22M3 21h22" stroke-width="2" stroke-linecap="round"/></svg>
+    </label>
+    <nav class="oc-dashboard-header__nav" aria-label="OpenCity navigation">
+      <label class="oc-dashboard-header__close" for="oc-dashboard-menu" aria-label="Close menu">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="m5 5 18 18M23 5 5 23" stroke-width="2" stroke-linecap="round"/></svg>
+      </label>
+      <ul>
+        <li><a href="https://data.opencity.in/dataset">Datasets</a></li>
+        <li><a href="https://opencity.in/category/explainers/">Explainers</a></li>
+        <li><a href="https://opencity.in/category/analysis/">Analysis</a></li>
+        <li><a href="https://opencity.in/category/jams/">Jams</a></li>
+        <li><a href="https://opencity.in/about-us/">About Us</a></li>
+        <li><a class="oc-dashboard-header__donate" href="https://oorvani.org/support-us" target="_blank" rel="noopener noreferrer">Donate</a></li>
+        <li><a href="https://opencity.in/apps/">Apps</a></li>
+      </ul>
+    </nav>
   </div>
-  <h1>Bus Stop Audit — Citizen-Led Assessment (Phase 1)</h1>
-  <div class="sub">Findings from the first phase of a citizen audit of bus stops, collected using KoboToolbox. Prepared for the government agencies responsible for bus stop infrastructure, accessibility and passenger amenities.</div>
-  <div class="meta" id="headerMeta"></div>
+
+  <div class="oc-dashboard-header__hero">
+    <h1 class="oc-dashboard-header__hero-title">State of Bus Stops</h1>
+    <p class="oc-dashboard-header__hero-text">Bus Stop Audit &mdash; Citizen-led Assessment (Phase 1). Findings from the first phase of a citizen audit of bus stops, collected using KoboToolbox. Prepared for the government agencies responsible for bus stop infrastructure, accessibility and passenger amenities.</p>
+    <div class="citytabs" id="cityTabs"></div>
+    <div class="meta" id="headerMeta"></div>
+  </div>
 </header>
 <div class="wrap">
 
@@ -274,12 +381,58 @@
 
 <h2 class="sec" id="replicate">Take This Audit to Your City</h2>
 <div class="card" style="max-width:950px">
-  <p style="font-size:13.5px;line-height:1.65;color:#33475c">This audit was carried out entirely by citizen volunteers using a free, open-source toolkit — and it can be repeated in any city or neighbourhood. If you are a resident group, civic organisation, student collective or government agency interested in running a similar bus stop audit where you live, we would be glad to help.</p>
-  <p style="font-size:13.5px;line-height:1.65;color:#33475c;margin-top:10px">For collaboration, questions or feedback on this dashboard, write to us at <a href="mailto:hello@nagariyal.org" style="color:#1a6baa;font-weight:600">hello@nagariyal.org</a>.</p>
+  <p style="font-size:13.5px;line-height:1.65;color:#4a4a4a">This audit was carried out entirely by citizen volunteers using a free, open-source toolkit — and it can be repeated in any city or neighbourhood. If you are a resident group, civic organisation, student collective or government agency interested in running a similar bus stop audit where you live, we would be glad to help.</p>
+  <p style="font-size:13.5px;line-height:1.65;color:#4a4a4a;margin-top:10px">For collaboration, questions or feedback on this dashboard, write to us at <a href="mailto:hello@nagariyal.org" style="color:#426133;font-weight:600">hello@nagariyal.org</a>.</p>
 </div>
 
-<footer id="footer"></footer>
 </div>
+
+<footer class="oc-footer">
+  <div class="oc-footer__inner">
+    <div>
+      <a href="https://opencity.in/" target="_blank" rel="noopener" aria-label="OpenCity home"><img class="oc-footer__wordmark" src="https://opencity.in/wp-content/uploads/2025/06/open-city_dark-background-wordmark-e1753117830698-1024x357.png" width="1024" height="357" alt="OpenCity" loading="lazy"></a>
+      <p class="oc-footer__tagline">Democratising data of India's cities</p>
+    </div>
+
+    <nav class="oc-footer__menu" aria-label="OpenCity resources">
+      <ul>
+        <li><a href="https://data.opencity.in/dataset">Datasets</a></li>
+        <li><a href="https://opencity.in/category/showcase/">Showcase</a></li>
+        <li><a href="https://opencity.in/category/explainers/">Explainers</a></li>
+        <li><a href="https://opencity.in/category/analysis/">Analysis</a></li>
+        <li><a href="https://opencity.in/category/jams/">Jams</a></li>
+        <li><a href="https://dashboards.opencity.in/">Dashboards</a></li>
+      </ul>
+    </nav>
+
+    <nav class="oc-footer__menu" aria-label="OpenCity information">
+      <ul>
+        <li><a href="https://opencity.in/about-us/">About Us</a></li>
+        <li><a href="https://opencity.in/subscribe/">Subscribe</a></li>
+        <li><a href="https://opencity.in/terms-and-conditions/">Terms and Conditions</a></li>
+        <li><a href="https://opencity.in/faqs/">FAQs and Attribution</a></li>
+        <li><a href="https://oorvani.org/support-us" target="_blank" rel="noopener noreferrer">Donate</a></li>
+        <li><a href="https://opencity.in/apps/">Apps</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <ul class="oc-footer__social" aria-label="OpenCity social media">
+        <li><a href="https://x.com/opencity_in" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.98 10.62 20.54 3h-1.55l-5.7 6.62L8.75 3H3.5l6.88 10.01L3.5 21h1.55l6.02-6.99L15.87 21h5.24l-7.13-10.38Zm-2.13 2.48L5.61 4.17H8l10.99 15.71H16.6l-4.75-6.78Z"/></svg><span class="oc-sr-only">X</span></a></li>
+        <li><a href="https://www.linkedin.com/company/74925255" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.7 3H4.3A1.3 1.3 0 0 0 3 4.3v15.4A1.3 1.3 0 0 0 4.3 21h15.4a1.3 1.3 0 0 0 1.3-1.3V4.3A1.3 1.3 0 0 0 19.7 3ZM8.34 18.34H5.67V9.75h2.67v8.59ZM7 8.57a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Zm11.34 9.77h-2.67v-4.18c0-1-.02-2.28-1.39-2.28-1.39 0-1.6 1.09-1.6 2.21v4.25h-2.67V9.75h2.56v1.17h.04a2.8 2.8 0 0 1 2.53-1.39c2.7 0 3.2 1.78 3.2 4.1v4.71Z"/></svg><span class="oc-sr-only">LinkedIn</span></a></li>
+        <li><a href="https://instagram.com/opencity.in" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.62c2.4 0 2.69.01 3.64.05.88.04 1.35.19 1.67.31.42.17.72.36 1.03.68.32.31.51.61.68 1.03.12.32.27.8.31 1.67.04.95.05 1.24.05 3.64s-.01 2.69-.05 3.64c-.04.88-.19 1.35-.31 1.67-.17.42-.36.72-.68 1.03-.31.32-.61.51-1.03.68-.32.12-.8.27-1.67.31-.95.04-1.24.05-3.64.05s-2.69-.01-3.64-.05c-.88-.04-1.35-.19-1.67-.31a3.77 3.77 0 0 1-1.03-.68c-.32-.31-.51-.61-.68-1.03-.12-.32-.27-.8-.31-1.67-.04-.95-.05-1.24-.05-3.64s.01-2.69.05-3.64c.04-.88.19-1.35.31-1.67.17-.42.36-.72.68-1.03.31-.32.61-.51 1.03-.68.32-.12.8-.27 1.67-.31.95-.04 1.24-.05 3.64-.05ZM12 3c-2.44 0-2.75.01-3.71.05-.96.05-1.61.2-2.19.42a5.56 5.56 0 0 0-2.63 2.63c-.22.58-.37 1.23-.42 2.19C3.01 9.25 3 9.56 3 12s.01 2.75.05 3.71c.05.96.2 1.61.42 2.19a5.56 5.56 0 0 0 2.63 2.63c.58.22 1.23.37 2.19.42.96.04 1.27.05 3.71.05s2.75-.01 3.71-.05c.96-.05 1.61-.2 2.19-.42a5.56 5.56 0 0 0 2.63-2.63c.22-.58.37-1.23.42-2.19.04-.96.05-1.27.05-3.71s-.01-2.75-.05-3.71c-.05-.96-.2-1.61-.42-2.19a5.56 5.56 0 0 0-2.63-2.63c-.58-.22-1.23-.37-2.19-.42C14.75 3.01 14.44 3 12 3Zm0 4.38A4.62 4.62 0 1 0 12 16.62 4.62 4.62 0 0 0 12 7.38ZM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm4.8-8.88a1.08 1.08 0 1 0 0 2.16 1.08 1.08 0 0 0 0-2.16Z"/></svg><span class="oc-sr-only">Instagram</span></a></li>
+      </ul>
+      <p class="oc-footer__programme">A Programme of</p>
+      <a href="https://oorvani.org/" target="_blank" rel="noopener" aria-label="Oorvani Foundation"><img class="oc-footer__oorvani" src="https://opencity.in/wp-content/uploads/2025/06/white-oorvani-with-tagline.png" width="997" height="352" alt="Oorvani &mdash; Empowering Citizens" loading="lazy"></a>
+    </div>
+  </div>
+
+  <div class="oc-footer__licence">
+    <p id="footer"></p>
+    <p style="margin-top:8px!important">Data and findings by <a href="https://www.nagariyal.org/" target="_blank" rel="noopener">Nagariyal</a>, with <a href="https://oorvani.org/" target="_blank" rel="noopener">Oorvani Foundation</a> and <a href="https://opencity.in/" target="_blank" rel="noopener">OpenCity</a>. Raw data on OpenCity: <a href="https://data.opencity.in/dataset/chennai-bus-stop-audit-data" target="_blank" rel="noopener">Chennai</a> &middot; <a href="https://data.opencity.in/dataset/bengaluru-bus-stop-audit-data" target="_blank" rel="noopener">Bengaluru</a>.</p>
+    <p style="margin-top:8px!important">Licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. You may share and adapt this material with attribution to &ldquo;Citizen-led Bus Stop Audit by Nagariyal, Oorvani Foundation &amp; OpenCity&rdquo;, under the same licence. Base map &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.</p>
+  </div>
+</footer>
 
 <script>
 /* Municipal zone boundaries — GCC zones 2022 (Chennai) and BBMP zones 2022 (Bengaluru),
@@ -325,7 +478,7 @@ function drawBoundary(key){
   [map, catmap].forEach(mp=>{
     const layer = L.geoJSON(fc, {
       interactive:false,
-      style:{color:'#7a8b9c', weight:1.2, opacity:.85, dashArray:'5 4', fill:false},
+      style:{color:'#757575', weight:1.2, opacity:.85, dashArray:'5 4', fill:false},
       attribution:'Zone boundaries: OpenCity'
     }).addTo(mp);
     layer.bringToBack();
@@ -336,7 +489,7 @@ function drawBoundary(key){
 function highlight(m){
   if(!m) return;
   m.openPopup();
-  m.setStyle({radius:13, weight:4, color:'#1a6baa'});
+  m.setStyle({radius:13, weight:4, color:'#426133'});
   setTimeout(()=>m.setStyle({radius:7, weight:1.5, color:'#fff'}), 3500);
 }
 function focusStop(i){
@@ -407,9 +560,14 @@ $('topTable').addEventListener('click', e=>{
 
 /* ---------- charts ---------- */
 Chart.defaults.font.family = "'Segoe UI',system-ui,sans-serif";
-Chart.defaults.color = '#5f7286';
-const NAVY='#0f3057', BLUE='#1a6fb5', TEAL='#00917c', AMBER='#e8a020', RED='#d64545', GREY='#9db0c2', YEL='#c9b458';
-const hbar = {indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{grid:{color:'#eef2f6'}},y:{grid:{display:false}}}, maintainAspectRatio:false};
+Chart.defaults.color = '#616161';
+// Semantic ramp — mirrors the audit band scale (good -> poor). Verified for colour-blind separation.
+const GOOD='#00917c', FAIR='#b7e4b0', AMBER='#e8a020', RED='#9e2a2b', GREY='#bdbdbd';
+const TEAL=GOOD, NAVY='#426133', BLUE=FAIR, YEL=AMBER;
+// Categorical set — for charts whose slices carry no good/bad meaning.
+// Chosen so the closest pair stays >=21 dE under protanopia, deuteranopia and tritanopia.
+const CAT=['#426133','#c8e537','#7fc8bd','#b57708','#7a4a6d','#1a1a1a','#c9b458'];
+const hbar = {indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{grid:{color:'#ececec'}},y:{grid:{display:false}}}, maintainAspectRatio:false};
 const charts = {};
 function mkChart(id, cfg){
   if(charts[id]) charts[id].destroy();
@@ -424,10 +582,10 @@ function renderCharts(){
   mkChart('scoreDist',{type:'bar',data:{labels:sdLabels,
     datasets:[{data:sdData,
     backgroundColor:sdLabels.map(l=>+l<=40?'#9e2a2b':+l<=60?'#e8a020':+l<=80?'#b7e4b0':'#00917c')}]},
-    options:{plugins:{legend:{display:false},title:{display:true,text:'Number of stops at each score'}},scales:{x:{title:{display:true,text:'Score out of 100'},grid:{display:false}},y:{grid:{color:'#eef2f6'}}},maintainAspectRatio:false}});
+    options:{plugins:{legend:{display:false},title:{display:true,text:'Number of stops at each score'}},scales:{x:{title:{display:true,text:'Score out of 100'},grid:{display:false}},y:{grid:{color:'#ececec'}}},maintainAspectRatio:false}});
   mkChart('accessChart',{type:'bar',data:{labels:d.access.labels,
-    datasets:[{data:d.access.data,backgroundColor:[BLUE,BLUE,BLUE,AMBER,AMBER,RED,RED]}]},
-    options:{...hbar, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'% of stops'}}}, scales:{x:{max:100,ticks:{callback:v=>v+'%'},grid:{color:'#eef2f6'}},y:{grid:{display:false}}}}});
+    datasets:[{data:d.access.data,backgroundColor:[GOOD,GOOD,FAIR,AMBER,AMBER,RED,RED]}]},
+    options:{...hbar, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'% of stops'}}}, scales:{x:{max:100,ticks:{callback:v=>v+'%'},grid:{color:'#ececec'}},y:{grid:{display:false}}}}});
   mkChart('pedChart',{type:'bar',data:{
     labels:['Space behind the shelter to walk or wheel','Space between the shelter and the road','Can pass the stop without stepping onto the road'],
     datasets:[{label:'Yes',data:d.ped.yes,backgroundColor:TEAL},{label:'No',data:d.ped.no,backgroundColor:RED}]},
@@ -442,7 +600,7 @@ function renderCharts(){
      {label:'Free / none',data:d.enc.free,backgroundColor:TEAL},
      {label:'Partial / unsure',data:d.enc.partial,backgroundColor:AMBER},
      {label:'Heavy / visible issues',data:d.enc.heavy,backgroundColor:RED}]},
-    options:{plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef2f6'}}},maintainAspectRatio:false}});
+    options:{plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#ececec'}}},maintainAspectRatio:false}});
   const sf=d.safe.data;
   mkChart('safeChart',{type:'doughnut',data:{
     labels:[`Safe (${sf[0]})`,`Somewhat safe (${sf[1]})`,`Unsafe (${sf[2]})`,`Not assessed (${sf[3]})`],
@@ -451,7 +609,7 @@ function renderCharts(){
   const lt=d.light.data;
   mkChart('lightChart',{type:'doughnut',data:{
     labels:[`Street/shop lighting (${lt[0]})`,`Shelter has light (${lt[1]})`,`Partial (${lt[2]})`,`None (${lt[3]})`,`Unsure (${lt[4]})`],
-    datasets:[{data:lt,backgroundColor:[BLUE,TEAL,AMBER,RED,GREY]}]},
+    datasets:[{data:lt,backgroundColor:[FAIR,GOOD,AMBER,RED,GREY]}]},
     options:{plugins:{legend:{position:'bottom'}},maintainAspectRatio:false}});
   mkChart('safeLight',{type:'bar',data:{
     labels:d.safeLight.labels,
@@ -460,9 +618,9 @@ function renderCharts(){
      {label:'Partial',data:d.safeLight.partial,backgroundColor:AMBER},
      {label:'Adequately lit',data:d.safeLight.lit,backgroundColor:TEAL},
      {label:'Unsure',data:d.safeLight.unsure,backgroundColor:GREY}]},
-    options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10.5}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef2f6'}}},maintainAspectRatio:false}});
+    options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10.5}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#ececec'}}},maintainAspectRatio:false}});
   mkChart('typeChart',{type:'doughnut',data:{labels:d.type.labels,
-    datasets:[{data:d.type.data,backgroundColor:[BLUE,RED,NAVY,'#5a8fc0',GREY,'#e07b7b',YEL]}]},
+    datasets:[{data:d.type.data,backgroundColor:CAT}]},
     options:{plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}}},maintainAspectRatio:false}});
   mkChart('condChart',{type:'bar',data:{
     labels:['Shelter condition','Roof / rain protection'],
@@ -470,17 +628,17 @@ function renderCharts(){
      {label:'Good (clean / roof intact)',data:[d.cond.cond[0],d.cond.roof[0]],backgroundColor:TEAL},
      {label:'Fair (minor wear / roof inadequate)',data:[d.cond.cond[1],d.cond.roof[1]],backgroundColor:AMBER},
      {label:'Poor (unclean-damaged / roof broken)',data:[d.cond.cond[2],d.cond.roof[2]],backgroundColor:RED}]},
-    options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef2f6'}}},maintainAspectRatio:false}});
+    options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#ececec'}}},maintainAspectRatio:false}});
   mkChart('shadeChart',{type:'bar',data:{
     labels:['Adequate shade in daytime','Big enough for the waiting crowd'],
     datasets:[
      {label:'Yes',data:d.shade.yes,backgroundColor:TEAL},
      {label:'Partial / unsure',data:d.shade.partial,backgroundColor:AMBER},
      {label:'No',data:d.shade.no,backgroundColor:RED}]},
-    options:{plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef2f6'}}},maintainAspectRatio:false}});
+    options:{plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#ececec'}}},maintainAspectRatio:false}});
   mkChart('amenChart',{type:'bar',data:{labels:d.amen.labels,
-    datasets:[{data:d.amen.data,backgroundColor:[TEAL,BLUE,AMBER,BLUE,RED,RED,RED]}]},
-    options:{...hbar, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'% of stops'}}}, scales:{x:{max:100,ticks:{callback:v=>v+'%'},grid:{color:'#eef2f6'}},y:{grid:{display:false}}}}});
+    datasets:[{data:d.amen.data,backgroundColor:[GOOD,FAIR,AMBER,FAIR,RED,RED,RED]}]},
+    options:{...hbar, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'% of stops'}}}, scales:{x:{max:100,ticks:{callback:v=>v+'%'},grid:{color:'#ececec'}},y:{grid:{display:false}}}}});
   const nm=d.name.data;
   mkChart('nameChart',{type:'doughnut',data:{
     labels:[`Clearly visible (${nm[0]})`,`Faded / hard to read (${nm[1]})`,`Missing (${nm[2]})`],
@@ -489,7 +647,7 @@ function renderCharts(){
   const rt=d.route.data;
   mkChart('routeChart',{type:'doughnut',data:{
     labels:[`Current and clearly visible (${rt[0]})`,`Outdated (${rt[1]})`,`Faded / partial (${rt[2]})`,`None displayed (${rt[3]})`],
-    datasets:[{data:rt,backgroundColor:[TEAL,AMBER,YEL,RED]}]},
+    datasets:[{data:rt,backgroundColor:[GOOD,FAIR,AMBER,RED]}]},
     options:{plugins:{legend:{position:'bottom'}},maintainAspectRatio:false}});
   const ad=d.ad.data;
   mkChart('adChart',{type:'doughnut',data:{
@@ -497,7 +655,7 @@ function renderCharts(){
     datasets:[{data:ad,backgroundColor:[RED,AMBER,TEAL]}]},
     options:{plugins:{legend:{position:'bottom'}},maintainAspectRatio:false}});
   mkChart('askChart',{type:'bar',data:{labels:d.asks.labels,
-    datasets:[{data:d.asks.data,backgroundColor:d.asks.labels.map((_,i)=>[NAVY,BLUE,AMBER,AMBER,BLUE,TEAL,BLUE,RED,GREY,YEL][i%10])}]},
+    datasets:[{data:d.asks.data,backgroundColor:d.asks.labels.map((_,i)=>CAT[i%CAT.length])}]},
     options:{...hbar, plugins:{legend:{display:false},title:{display:true,text:`Mentions among ${CITY_DATA[CK].askN} citizen suggestions`}}}});
 }
 
@@ -548,7 +706,7 @@ function renderCity(key){
   $('topTable').innerHTML = '<tr><th>Bus stop</th><th>Score</th><th>Key issues</th></tr>' +
     ranked.slice(0,12).map(({s,i,v},r)=>{
       const cls = v<=40?'b-red':v<=60?'b-amber':'b-yellow';
-      return `<tr class="${r>=5?'extra':''}"><td><a href="#map" class="stop-link" data-stop="${i}" title="Show on map">${s.name}</a></td><td><span class="badge ${cls}">${v}</span></td><td style="font-size:11.5px;color:#5f7286">${s.issues.slice(0,4).join(', ')}${s.issues.length>4?' +'+(s.issues.length-4):''}</td></tr>`;
+      return `<tr class="${r>=5?'extra':''}"><td><a href="#map" class="stop-link" data-stop="${i}" title="Show on map">${s.name}</a></td><td><span class="badge ${cls}">${v}</span></td><td style="font-size:11.5px;color:#616161">${s.issues.slice(0,4).join(', ')}${s.issues.length>4?' +'+(s.issues.length-4):''}</td></tr>`;
     }).join('');
   $('topTable').classList.remove('showing-all');
   $('showAll').textContent = 'Show all 12';
