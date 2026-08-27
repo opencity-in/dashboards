@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore OpenCity's interactive dashboards on public infrastructure and urban life in India's cities.">
+  <title>Dashboards | OpenCity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=PT+Sans:wght@400;700&amp;display=swap">
+  <style>
+    :root {
+      --forest: #426133;
+      --leaf: #5e8b48;
+      --lime: #c8e537;
+      --sun: #ffd527;
+      --brick: #a62635;
+      --ink: #1a1a1a;
+      --gray-600: #616161;
+      --gray-300: #c1c1c1;
+      --gray-100: #f0f0f0;
+      --paper: #fff;
+      --forest-tint: #eef3ea;
+      --color-primary: var(--forest);
+      --color-accent: var(--sun);
+      --color-danger: var(--brick);
+      --color-text: var(--ink);
+      --color-text-muted: var(--gray-600);
+      --color-border: var(--gray-300);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--color-text);
+      font: 400 16px/1.55 "PT Sans", sans-serif;
+    }
+    body:has(.oc-dashboard-header__state:checked) { overflow: hidden; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3, .dashboard-card__cta {
+      font-family: "Manrope", sans-serif;
+    }
+    :focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 4px;
+    }
+
+    .oc-dashboard-header {
+      width: 100%;
+      background: var(--paper);
+      color: var(--color-text);
+      font-family: "Manrope", sans-serif;
+    }
+    .oc-dashboard-header p { margin: 0; }
+    .oc-dashboard-header__bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 24px;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .oc-dashboard-header__identity { justify-self: start; min-width: 0; }
+    .oc-dashboard-header__eyebrow {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--color-text-muted);
+      font: 400 12px/1.2 "PT Sans", sans-serif;
+    }
+    .oc-dashboard-header__logo { width: 116px; height: auto; }
+    .oc-dashboard-header__title {
+      margin: 0;
+      font-size: clamp(22px, 2.2vw, 28px);
+      line-height: 1.2;
+      text-align: center;
+    }
+    .oc-dashboard-header__title a {
+      color: var(--color-primary);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .oc-dashboard-header__title a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .oc-dashboard-header__state {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .oc-dashboard-header__open,
+    .oc-dashboard-header__close {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      padding: 8px;
+      place-items: center;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+    .oc-dashboard-header__open { justify-self: end; }
+    .oc-dashboard-header__open svg,
+    .oc-dashboard-header__close svg { stroke: currentColor; }
+    .oc-dashboard-header__state:focus-visible + .oc-dashboard-header__open {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+    .oc-dashboard-header__nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      padding: 24px 32px;
+      overflow-y: auto;
+      background: var(--paper);
+    }
+    .oc-dashboard-header__state:checked ~ .oc-dashboard-header__nav { display: block; }
+    .oc-dashboard-header__close { margin-left: auto; }
+    .oc-dashboard-header__nav ul {
+      display: grid;
+      gap: 20px;
+      max-width: 420px;
+      margin: 40px auto 0;
+      padding: 0;
+      list-style: none;
+      font-size: clamp(20px, 3vw, 32px);
+    }
+    .oc-dashboard-header__nav a { color: var(--color-text); text-decoration: none; }
+    .oc-dashboard-header__nav a:hover {
+      text-decoration: underline;
+      text-decoration-color: var(--color-primary);
+    }
+    .oc-dashboard-header__nav a.oc-dashboard-header__donate { color: var(--color-danger); }
+    .oc-dashboard-header__hero {
+      padding: clamp(48px, 7vw, 88px) 32px;
+      background: var(--color-primary);
+      color: var(--paper);
+    }
+    .oc-dashboard-header__hero-inner { max-width: 1340px; margin: 0 auto; }
+    .oc-dashboard-header__hero-title {
+      max-width: 840px;
+      margin-bottom: 16px;
+      font: 800 clamp(34px, 5.5vw, 66px)/1.08 "Manrope", sans-serif;
+      letter-spacing: -0.025em;
+    }
+    .oc-dashboard-header__hero-text {
+      max-width: 720px;
+      color: #f3f3f3;
+      font: 400 clamp(17px, 1.8vw, 21px)/1.55 "PT Sans", sans-serif;
+    }
+
+    main { min-height: 55vh; }
+    .dashboard-listing {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 64px 32px 96px;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+    .dashboard-card {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      background: var(--paper);
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    .dashboard-card:hover,
+    .dashboard-card:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 14px 38px rgba(26, 26, 26, .12);
+      transform: translateY(-4px);
+    }
+    .dashboard-card__visual {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--forest-tint);
+    }
+    .dashboard-card__photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform .35s ease;
+    }
+    .dashboard-card:hover .dashboard-card__photo { transform: scale(1.025); }
+    .dashboard-card__body {
+      display: flex;
+      min-height: 250px;
+      flex: 1;
+      flex-direction: column;
+      padding: 28px;
+    }
+    .dashboard-card h3 {
+      margin-bottom: 10px;
+      color: var(--color-primary);
+      font-size: clamp(22px, 2.2vw, 28px);
+      line-height: 1.25;
+    }
+    .dashboard-card__description {
+      max-width: 56ch;
+      margin-bottom: 28px;
+      color: var(--color-text-muted);
+    }
+    .dashboard-card__cta {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 10px;
+      align-self: flex-start;
+      margin-top: auto;
+      color: var(--color-primary);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .dashboard-card__cta::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+    }
+    .dashboard-card__cta svg {
+      width: 18px;
+      transition: transform .2s ease;
+    }
+    .dashboard-card:hover .dashboard-card__cta svg { transform: translateX(4px); }
+    .dashboard-card__cta:focus-visible { outline-offset: -4px; }
+
+    .oc-footer {
+      width: 100%;
+      padding: 48px 32px;
+      background: #000;
+      color: var(--lime);
+      font: 400 16px/1.45 "PT Sans", sans-serif;
+    }
+    .oc-footer a { color: inherit; text-decoration: none; }
+    .oc-footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .oc-footer :focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
+    .oc-footer ul { margin: 0; padding: 0; list-style: none; }
+    .oc-footer p { margin: 0; }
+    .oc-footer nav { font-family: "Manrope", sans-serif; font-size: 15px; }
+    .oc-footer__inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.2fr 1.1fr;
+      gap: 40px 48px;
+      max-width: 1340px;
+      margin: auto;
+    }
+    .oc-footer__wordmark { width: 260px; height: auto; }
+    .oc-footer__tagline { margin-top: 20px !important; font-weight: 700; }
+    .oc-footer__menu ul { display: grid; gap: 18px; }
+    .oc-footer__social {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 56px !important;
+      color: var(--sun);
+    }
+    .oc-footer__social a,
+    .oc-footer__social svg { display: block; width: 26px; height: 26px; }
+    .oc-footer__social svg { fill: currentColor; }
+    .oc-footer__programme {
+      margin-bottom: 14px !important;
+      font-family: "Manrope", sans-serif;
+      font-size: 15px;
+    }
+    .oc-footer__oorvani { width: 230px; height: auto; }
+    .oc-sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 800px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .oc-footer { padding: 32px 16px; }
+      .oc-footer__inner { grid-template-columns: 1fr; gap: 32px; }
+      .oc-footer__social { margin-bottom: 24px !important; }
+    }
+    @media (max-width: 700px) {
+      .oc-dashboard-header__bar {
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        padding: 16px;
+      }
+      .oc-dashboard-header__title {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        text-align: left;
+      }
+      .oc-dashboard-header__logo { width: 102px; }
+      .oc-dashboard-header__nav { padding: 16px; }
+      .oc-dashboard-header__hero { padding: 42px 16px 48px; }
+      .dashboard-listing { padding: 48px 16px 64px; }
+      .dashboard-card__body { min-height: 0; padding: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="oc-dashboard-header">
+    <div class="oc-dashboard-header__bar">
+      <div class="oc-dashboard-header__identity">
+        <span class="oc-dashboard-header__eyebrow">An initiative of</span>
+        <a href="https://opencity.in/" target="_blank" rel="noopener" aria-label="OpenCity home">
+          <img class="oc-dashboard-header__logo" src="bus-stop-audit/assets/opencity.png" width="319" height="96" alt="OpenCity">
+        </a>
+      </div>
+
+      <p class="oc-dashboard-header__title"><a href="/">Dashboards</a></p>
+
+      <input class="oc-dashboard-header__state" type="checkbox" id="oc-dashboard-menu">
+      <label class="oc-dashboard-header__open" for="oc-dashboard-menu" aria-label="Open menu">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M3 7h22M3 14h22M3 21h22" stroke-width="2" stroke-linecap="round"/></svg>
+      </label>
+      <nav class="oc-dashboard-header__nav" aria-label="OpenCity navigation">
+        <label class="oc-dashboard-header__close" for="oc-dashboard-menu" aria-label="Close menu">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="m5 5 18 18M23 5 5 23" stroke-width="2" stroke-linecap="round"/></svg>
+        </label>
+        <ul>
+          <li><a href="https://data.opencity.in/dataset">Datasets</a></li>
+          <li><a href="https://opencity.in/category/explainers/">Explainers</a></li>
+          <li><a href="https://opencity.in/category/analysis/">Analysis</a></li>
+          <li><a href="https://opencity.in/category/jams/">Jams</a></li>
+          <li><a href="https://opencity.in/about-us/">About Us</a></li>
+          <li><a class="oc-dashboard-header__donate" href="https://oorvani.org/support-us" target="_blank" rel="noopener noreferrer">Donate</a></li>
+          <li><a href="https://opencity.in/apps/">Apps</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="oc-dashboard-header__hero">
+      <div class="oc-dashboard-header__hero-inner">
+        <h1 class="oc-dashboard-header__hero-title">Explore the city through data</h1>
+        <p class="oc-dashboard-header__hero-text">Interactive dashboards that turn public data and citizen observations into clear, useful views of how our cities work.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="dashboard-listing" aria-label="Available dashboards">
+      <div class="dashboard-grid">
+        <article class="dashboard-card">
+          <div class="dashboard-card__visual">
+            <img class="dashboard-card__photo" src="assets/bus-stop-audit-dashboard.png" alt="Screenshot of the State of Bus Stops dashboard showing its overview and priority map" width="1200" height="675">
+          </div>
+          <div class="dashboard-card__body">
+            <h3>State of Bus Stops</h3>
+            <p class="dashboard-card__description">Explore findings from a citizen-led audit of bus stop infrastructure, accessibility, safety and passenger amenities.</p>
+            <a class="dashboard-card__cta" href="/bus-stop-audit/">
+              Explore dashboard
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="dashboard-card">
+          <div class="dashboard-card__visual">
+            <img class="dashboard-card__photo" src="assets/stormwater-drain-audit-dashboard.png" alt="Screenshot of the Stormwater Drain Audit dashboard showing Bengaluru's drain network, audit photos and condition charts" width="1200" height="675">
+          </div>
+          <div class="dashboard-card__body">
+            <h3>Stormwater Drain Audit</h3>
+            <p class="dashboard-card__description">See citizen audit observations that make Bengaluru&rsquo;s stormwater network visible, understandable and actionable.</p>
+            <a class="dashboard-card__cta" href="https://buildingaresilientbengaluru.com/audit-dashboard/" target="_blank" rel="noopener noreferrer">
+              Explore dashboard <span class="oc-sr-only">(opens in a new tab)</span>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="oc-footer">
+    <div class="oc-footer__inner">
+      <div>
+        <a href="https://opencity.in/" aria-label="OpenCity home"><img class="oc-footer__wordmark" src="https://opencity.in/wp-content/uploads/2025/06/open-city_dark-background-wordmark-e1753117830698-1024x357.png" width="1024" height="357" alt="OpenCity" loading="lazy"></a>
+        <p class="oc-footer__tagline">Democratising data of India&rsquo;s cities</p>
+      </div>
+
+      <nav class="oc-footer__menu" aria-label="OpenCity resources">
+        <ul>
+          <li><a href="https://data.opencity.in/dataset">Datasets</a></li>
+          <li><a href="https://opencity.in/category/showcase/">Showcase</a></li>
+          <li><a href="https://opencity.in/category/explainers/">Explainers</a></li>
+          <li><a href="https://opencity.in/category/analysis/">Analysis</a></li>
+          <li><a href="https://opencity.in/category/jams/">Jams</a></li>
+          <li><a href="https://dashboards.opencity.in/">Dashboards</a></li>
+        </ul>
+      </nav>
+
+      <nav class="oc-footer__menu" aria-label="OpenCity information">
+        <ul>
+          <li><a href="https://opencity.in/about-us/">About Us</a></li>
+          <li><a href="https://opencity.in/subscribe/">Subscribe</a></li>
+          <li><a href="https://opencity.in/terms-and-conditions/">Terms and Conditions</a></li>
+          <li><a href="https://opencity.in/faqs/">FAQs and Attribution</a></li>
+          <li><a href="https://oorvani.org/support-us" target="_blank" rel="noopener noreferrer">Donate</a></li>
+          <li><a href="https://opencity.in/apps/">Apps</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <ul class="oc-footer__social" aria-label="OpenCity social media">
+          <li><a href="https://x.com/opencity_in" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.98 10.62 20.54 3h-1.55l-5.7 6.62L8.75 3H3.5l6.88 10.01L3.5 21h1.55l6.02-6.99L15.87 21h5.24l-7.13-10.38Zm-2.13 2.48L5.61 4.17H8l10.99 15.71H16.6l-4.75-6.78Z"/></svg><span class="oc-sr-only">X</span></a></li>
+          <li><a href="https://www.linkedin.com/company/74925255" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.7 3H4.3A1.3 1.3 0 0 0 3 4.3v15.4A1.3 1.3 0 0 0 4.3 21h15.4a1.3 1.3 0 0 0 1.3-1.3V4.3A1.3 1.3 0 0 0 19.7 3ZM8.34 18.34H5.67V9.75h2.67v8.59ZM7 8.57a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Zm11.34 9.77h-2.67v-4.18c0-1-.02-2.28-1.39-2.28-1.39 0-1.6 1.09-1.6 2.21v4.25h-2.67V9.75h2.56v1.17h.04a2.8 2.8 0 0 1 2.53-1.39c2.7 0 3.2 1.78 3.2 4.1v4.71Z"/></svg><span class="oc-sr-only">LinkedIn</span></a></li>
+          <li><a href="https://instagram.com/opencity.in" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.62c2.4 0 2.69.01 3.64.05.88.04 1.35.19 1.67.31.42.17.72.36 1.03.68.32.31.51.61.68 1.03.12.32.27.8.31 1.67.04.95.05 1.24.05 3.64s-.01 2.69-.05 3.64c-.04.88-.19 1.35-.31 1.67-.17.42-.36.72-.68 1.03-.31.32-.61.51-1.03.68-.32.12-.8.27-1.67.31-.95.04-1.24.05-3.64.05s-2.69-.01-3.64-.05c-.88-.04-1.35-.19-1.67-.31a3.77 3.77 0 0 1-1.03-.68c-.32-.31-.51-.61-.68-1.03-.12-.32-.27-.8-.31-1.67-.04-.95-.05-1.24-.05-3.64s.01-2.69.05-3.64c.04-.88.19-1.35.31-1.67.17-.42.36-.72.68-1.03.31-.32.61-.51 1.03-.68.32-.12.8-.27 1.67-.31.95-.04 1.24-.05 3.64-.05ZM12 3c-2.44 0-2.75.01-3.71.05-.96.05-1.61.2-2.19.42a5.56 5.56 0 0 0-2.63 2.63c-.22.58-.37 1.23-.42 2.19C3.01 9.25 3 9.56 3 12s.01 2.75.05 3.71c.05.96.2 1.61.42 2.19a5.56 5.56 0 0 0 2.63 2.63c.58.22 1.23.37 2.19.42.96.04 1.27.05 3.71.05s2.75-.01 3.71-.05c.96-.05 1.61-.2 2.19-.42a5.56 5.56 0 0 0 2.63-2.63c.22-.58.37-1.23.42-2.19.04-.96.05-1.27.05-3.71s-.01-2.75-.05-3.71c-.05-.96-.2-1.61-.42-2.19a5.56 5.56 0 0 0-2.63-2.63c-.58-.22-1.23-.37-2.19-.42C14.75 3.01 14.44 3 12 3Zm0 4.38A4.62 4.62 0 1 0 12 16.62 4.62 4.62 0 0 0 12 7.38ZM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm4.8-8.88a1.08 1.08 0 1 0 0 2.16 1.08 1.08 0 0 0 0-2.16Z"/></svg><span class="oc-sr-only">Instagram</span></a></li>
+        </ul>
+        <p class="oc-footer__programme">A Programme of</p>
+        <a href="https://oorvani.org/" aria-label="Oorvani Foundation"><img class="oc-footer__oorvani" src="https://opencity.in/wp-content/uploads/2025/06/white-oorvani-with-tagline.png" width="997" height="352" alt="Oorvani — Empowering Citizens" loading="lazy"></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
