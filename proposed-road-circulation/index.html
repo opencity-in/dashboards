@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GBA Road Circulation Plan</title>
+<meta name="description" content="Georeferenced scans of the Greater Bengaluru Authority Proposed Circulation Plan, over OpenStreetMap or satellite imagery.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map"></div>
+
+<div id="top">
+  <a id="back" href="../">&lt; Back to Opencity Dashboards</a>
+  <div id="searchbar" class="float">
+    <span class="ttl">GBA Circulation Plan</span>
+    <input id="q" type="search" placeholder="Search a place in Bengaluru" autocomplete="off" enterkeyhint="search">
+    <button class="x" id="qclear" title="Clear" hidden>✕</button>
+    <button class="sb" id="bLoc" title="My location" aria-label="My location">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg></button>
+    <button class="sb" id="bHelp" title="Help" aria-label="Help">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 1 1 3.7 2.4c-.8.4-1.2.9-1.2 1.8"/><path d="M12 17h.01"/></svg></button>
+  </div>
+  <div id="results" class="float" hidden></div>
+</div>
+
+<div id="tools">
+  <button class="fab float" id="bLayers" title="Layers &amp; basemap" aria-label="Layers">
+    <svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg></button>
+  <button class="fab float" id="bLegend" title="Legend" aria-label="Legend" hidden>
+    <svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg></button>
+  <div class="zoomgrp float"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button></div>
+</div>
+
+<!-- hidden menus -->
+<div id="pLayers" class="panel float" hidden>
+  <h2>Layers</h2>
+  <div class="seg" id="basemap"><button data-b="osm" class="on">Map</button><button data-b="sat">Satellite</button><button data-b="none">None</button></div>
+  <div class="sub">Display</div>
+  <div class="group">
+    <div class="row"><span class="grow">All sheets opacity</span><input id="gop" type="range" min="0" max="1" step="0.01" value="0.6"></div>
+    <div class="row" id="bndRow" hidden><span class="grow">GBA corporation boundaries <span class="hint">OSM</span></span><input id="bnd" class="sw" type="checkbox"></div>
+    <div class="row"><span class="grow">Sheet outlines</span><input id="outlines" class="sw" type="checkbox"></div>
+    <div class="row" id="labRow" hidden><span class="grow">Place labels on satellite</span><input id="labels" class="sw" type="checkbox"></div>
+    <div class="row"><span class="grow">Prefer Bengaluru in search</span><input id="bias" class="sw" type="checkbox" checked></div>
+    <div class="row"><span class="grow">Follow my location</span><input id="follow" class="sw" type="checkbox"></div>
+    <div class="row"><span class="grow">Saved sheets <span class="hint" id="cacheInfo"></span></span><button class="chip" id="clearCache">Clear</button></div>
+  </div>
+  <div class="sub">Sheets <span class="hint" id="count"></span></div>
+  <input id="filter" class="filter" type="search" placeholder="Filter, e.g. bncc or p06">
+  <div style="display:flex;gap:6px;margin-bottom:8px"><button class="chip" id="showAll">Show all</button><button class="chip" id="hideAll">Hide all</button></div>
+  <div id="list" class="group"></div>
+</div>
+
+<div id="pLegend" class="panel float" hidden>
+  <h2>Legend <span class="hint">from the original PDFs</span></h2>
+  <div id="legendBody"></div>
+</div>
+
+<!-- selected point (replaces popups) -->
+<div id="card" class="float" hidden></div>
+
+<!-- help popup -->
+<div id="help" class="scrim" hidden>
+  <div class="dlg float" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="dhead"><h2 id="helpTitle"></h2><button class="x" id="helpClose" aria-label="Close">✕</button></div>
+    <div id="helpBody"></div>
+    <div class="dfoot"><button class="btn" id="helpSkip">Skip</button><button class="btn primary" id="helpGo">Continue to onboarding</button></div>
+  </div>
+</div>
+
+<!-- onboarding tour -->
+<div id="tour" hidden>
+  <div id="spot"></div>
+  <div id="stepCard" class="float" role="dialog" aria-live="polite">
+    <div class="dhead"><h3 id="stepTitle"></h3><span class="hint" id="stepCount"></span></div>
+    <div id="stepText"></div>
+    <div id="stepDots"></div>
+    <div class="dfoot"><button class="btn" id="stepSkip">Skip</button><span class="grow"></span><button class="btn" id="stepBack">Back</button><button class="btn primary" id="stepNext">Next</button></div>
+  </div>
+</div>
+
+<div id="toast" class="float" hidden><span id="status"></span><i id="bar"></i></div>
+
+<div id="drop" class="float" hidden>
+  <b>Couldn’t find a tileset next to this page</b>
+  <p class="hint">Drop <code>gba-tileset.zip</code> here, or</p>
+  <button class="btn primary" id="pick">Choose file…</button><input id="file" type="file" accept=".zip" hidden>
+  <p class="hint">Tip: serve this folder (<code>python3 -m http.server</code>) to load it automatically.</p>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://unpkg.com/pmtiles@3.2.1/dist/pmtiles.js"></script>
+<script src="main.js"></script>
+<script src="onboarding.js"></script>
+</body>
+</html>

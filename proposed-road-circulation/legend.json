@@ -1,0 +1,2019 @@
+{
+ "source": {
+  "method": "OCR (tesseract) of the printed legends + pixel sampling of swatches; the PDFs have no text layer",
+  "pdfs": [
+   "proposedcirculationplanblr-bccc.pdf",
+   "proposedcirculationplanblr-bda.pdf",
+   "proposedcirculationplanblr-becc.pdf",
+   "proposedcirculationplanblr-bncc.pdf",
+   "proposedcirculationplanblr-bscc.pdf",
+   "proposedcirculationplanblr-bwcc.pdf"
+  ],
+  "reference_sheets": [
+   "bccc-p05",
+   "becc-p07",
+   "bncc-p07",
+   "bscc-p06",
+   "bwcc-p08",
+   "bccc-p06"
+  ]
+ },
+ "plan": {
+  "title": "PROPOSED CIRCULATION PLAN FOR GREATER BENGALURU AUTHORITY",
+  "authority": [
+   "Government of Karnataka",
+   "Greater Bengaluru Authority"
+  ],
+  "scale": "1:10,000",
+  "sheet_title": "PROPOSED CIRCULATION MAP",
+  "scale_bar": {
+   "unit": "m",
+   "ticks": [
+    187.5,
+    375.0,
+    750.0,
+    1125.0
+   ]
+  }
+ },
+ "sections": [
+  {
+   "id": "sheet-index",
+   "title": "Index - 1:10,000 corporation sheets",
+   "columns": [
+    [
+     {
+      "label": "LPA Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#050909",
+       "colors": [
+        "#050909",
+        "#e3e7e6",
+        "#606464",
+        "#888c8b",
+        "#3b3f3f",
+        "#b0b4b3"
+       ],
+       "width_px": 171,
+       "height_px": 15,
+       "thickness_px": 9,
+       "ink_fraction": 0.5,
+       "profile": [
+        [
+         1,
+         0.158
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.199
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.088
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.234
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.088
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.088
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.099
+        ]
+       ]
+      }
+     },
+     {
+      "label": "District Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#060407",
+       "colors": [
+        "#060407",
+        "#dde0e1",
+        "#716b6f",
+        "#898c8c",
+        "#b9bbbe",
+        "#2e3033"
+       ],
+       "width_px": 171,
+       "height_px": 14,
+       "thickness_px": 8,
+       "ink_fraction": 0.47,
+       "profile": [
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.164
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.082
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.082
+        ],
+        [
+         0,
+         0.018
+        ],
+        [
+         1,
+         0.246
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.088
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.076
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.175
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Taluk Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#000403",
+       "colors": [
+        "#000403",
+        "#e4e8e7",
+        "#afb3b2",
+        "#3d4140"
+       ],
+       "width_px": 168,
+       "height_px": 16,
+       "thickness_px": 10,
+       "ink_fraction": 0.53,
+       "profile": [
+        [
+         1,
+         0.161
+        ],
+        [
+         0,
+         0.018
+        ],
+        [
+         1,
+         0.083
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.262
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.339
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.012
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.101
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Municipal Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#d2048a",
+       "colors": [
+        "#ffe0ff",
+        "#d2048a",
+        "#bc1380",
+        "#e9fff7",
+        "#d869af",
+        "#ffc3f4"
+       ],
+       "width_px": 164,
+       "height_px": 16,
+       "thickness_px": 9,
+       "ink_fraction": 0.42,
+       "profile": [
+        [
+         1,
+         0.085
+        ],
+        [
+         0,
+         0.043
+        ],
+        [
+         1,
+         0.073
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.116
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.012
+        ],
+        [
+         0,
+         0.024
+        ],
+        [
+         1,
+         0.207
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.128
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.098
+        ],
+        [
+         0,
+         0.006
+        ],
+        [
+         1,
+         0.012
+        ],
+        [
+         0,
+         0.024
+        ],
+        [
+         1,
+         0.11
+        ],
+        [
+         0,
+         0.018
+        ],
+        [
+         1,
+         0.018
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Conurbation Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#1968b7",
+       "colors": [
+        "#e7f6ff",
+        "#bedbf9",
+        "#1968b7",
+        "#d5e9ff",
+        "#5a8cbf",
+        "#2e70af"
+       ],
+       "width_px": 137,
+       "height_px": 8,
+       "thickness_px": 7,
+       "ink_fraction": 0.75,
+       "profile": [
+        [
+         1,
+         0.088
+        ],
+        [
+         0,
+         0.029
+        ],
+        [
+         1,
+         0.299
+        ],
+        [
+         0,
+         0.029
+        ],
+        [
+         1,
+         0.109
+        ],
+        [
+         0,
+         0.022
+        ],
+        [
+         1,
+         0.314
+        ],
+        [
+         0,
+         0.007
+        ],
+        [
+         1,
+         0.102
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Village Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#020506",
+       "colors": [
+        "#020506",
+        "#dfe2e5",
+        "#393d3d",
+        "#b3b7b7",
+        "#606365",
+        "#85898a"
+       ],
+       "width_px": 170,
+       "height_px": 16,
+       "thickness_px": 10,
+       "ink_fraction": 0.41,
+       "profile": [
+        [
+         1,
+         0.135
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.106
+        ],
+        [
+         0,
+         0.018
+        ],
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.118
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.006
+        ],
+        [
+         0,
+         0.018
+        ],
+        [
+         1,
+         0.1
+        ],
+        [
+         0,
+         0.047
+        ],
+        [
+         1,
+         0.1
+        ],
+        [
+         0,
+         0.047
+        ],
+        [
+         1,
+         0.094
+        ],
+        [
+         0,
+         0.047
+        ],
+        [
+         1,
+         0.106
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Survey Boundary",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#070a0e",
+       "colors": [
+        "#070a0e",
+        "#5c6567",
+        "#8c8b8f",
+        "#e5e9e9",
+        "#e9ecf3"
+       ],
+       "width_px": 145,
+       "height_px": 7,
+       "thickness_px": 6,
+       "ink_fraction": 0.59,
+       "profile": [
+        [
+         1,
+         0.255
+        ],
+        [
+         0,
+         0.124
+        ],
+        [
+         1,
+         0.248
+        ],
+        [
+         0,
+         0.007
+        ],
+        [
+         1,
+         0.007
+        ],
+        [
+         0,
+         0.117
+        ],
+        [
+         1,
+         0.241
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Electric Power Lines",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "line",
+       "color": "#db1211",
+       "colors": [
+        "#ffe3dd",
+        "#db1211",
+        "#dc868d",
+        "#e8faf8",
+        "#bf1217",
+        "#e8bcba"
+       ],
+       "width_px": 94,
+       "height_px": 24,
+       "thickness_px": 5,
+       "ink_fraction": 0.45,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Nala/Canal/River",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "line",
+       "color": "#72add3",
+       "colors": [
+        "#e3f8ff",
+        "#8abad9",
+        "#b6e1fa",
+        "#d2ecff",
+        "#72add3",
+        "#add3e9"
+       ],
+       "width_px": 146,
+       "height_px": 36,
+       "thickness_px": 13,
+       "ink_fraction": 0.39,
+       "profile": [
+        [
+         1,
+         0.007
+        ],
+        [
+         0,
+         0.007
+        ],
+        [
+         1,
+         0.986
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Tank",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "fill",
+       "color": "#6eaed3",
+       "colors": [
+        "#93d1f6",
+        "#84c0e3",
+        "#6eaed3",
+        "#8bcaed",
+        "#5c96bc",
+        "#e8f7ff"
+       ],
+       "width_px": 85,
+       "height_px": 38,
+       "thickness_px": 34,
+       "ink_fraction": 0.7,
+       "profile": [
+        [
+         1,
+         0.035
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.929
+        ],
+        [
+         0,
+         0.012
+        ],
+        [
+         1,
+         0.012
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Hillocks",
+      "agree": "5/6",
+      "swatch": {
+       "kind": "area-pattern",
+       "color": "#babec1",
+       "colors": [
+        "#dbdfe2",
+        "#eaeef1",
+        "#babec1",
+        "#c6cacd"
+       ],
+       "width_px": 136,
+       "height_px": 47,
+       "thickness_px": 2,
+       "ink_fraction": 0.28,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Existing Devlopments",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "area-pattern",
+       "color": "#ecece2",
+       "colors": [
+        "#f4f3e9",
+        "#ecece2",
+        "#f1eee6",
+        "#eff0e4"
+       ],
+       "width_px": 131,
+       "height_px": 43,
+       "thickness_px": 3,
+       "ink_fraction": 0.24,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Forest",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "area-pattern",
+       "color": "#93a38d",
+       "colors": [
+        "#d8e1d3",
+        "#ecf5e8",
+        "#c3cebf",
+        "#cbd4c4",
+        "#93a38d",
+        "#f1f9ea"
+       ],
+       "width_px": 136,
+       "height_px": 47,
+       "thickness_px": 4,
+       "ink_fraction": 0.3,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     }
+    ],
+    [
+     {
+      "label": "National Highway",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "line",
+       "color": "#ffdc02",
+       "colors": [
+        "#ffdc02",
+        "#fffde4",
+        "#fff5b0",
+        "#f9e064",
+        "#f5e53e",
+        "#070b0a"
+       ],
+       "width_px": 191,
+       "height_px": 60,
+       "thickness_px": 25,
+       "ink_fraction": 0.42,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     },
+     {
+      "label": "State Highway",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#96bb02",
+       "colors": [
+        "#96bb02",
+        "#09090e",
+        "#a3c113",
+        "#eaf5cf",
+        "#9bb633",
+        "#b9cc7d"
+       ],
+       "width_px": 201,
+       "height_px": 60,
+       "thickness_px": 17,
+       "ink_fraction": 0.31,
+       "profile": [
+        [
+         1,
+         0.866
+        ],
+        [
+         0,
+         0.02
+        ],
+        [
+         1,
+         0.045
+        ],
+        [
+         0,
+         0.015
+        ],
+        [
+         1,
+         0.005
+        ],
+        [
+         0,
+         0.01
+        ],
+        [
+         1,
+         0.04
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Major District Road",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "line",
+       "color": "#d00814",
+       "colors": [
+        "#d00814",
+        "#c10a11",
+        "#ffdae0",
+        "#bd202f",
+        "#d4646a",
+        "#d3182b"
+       ],
+       "width_px": 174,
+       "height_px": 18,
+       "thickness_px": 13,
+       "ink_fraction": 0.75,
+       "profile": [
+        [
+         1,
+         1.0
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Village Roads",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#f5ab14",
+       "colors": [
+        "#030505",
+        "#f5ab14",
+        "#fffbe5",
+        "#e5ac40",
+        "#ffe9bd",
+        "#d5d7d7"
+       ],
+       "width_px": 198,
+       "height_px": 60,
+       "thickness_px": 8,
+       "ink_fraction": 0.18,
+       "profile": [
+        [
+         1,
+         0.848
+        ],
+        [
+         0,
+         0.035
+        ],
+        [
+         1,
+         0.03
+        ],
+        [
+         0,
+         0.04
+        ],
+        [
+         1,
+         0.045
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Railway Lines",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#010304",
+       "colors": [
+        "#010304",
+        "#dde0e3",
+        "#343739",
+        "#b5b9b8",
+        "#606266",
+        "#8f9295"
+       ],
+       "width_px": 194,
+       "height_px": 60,
+       "thickness_px": 13,
+       "ink_fraction": 0.2,
+       "profile": [
+        [
+         1,
+         0.825
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.005
+        ],
+        [
+         0,
+         0.052
+        ],
+        [
+         1,
+         0.031
+        ],
+        [
+         0,
+         0.041
+        ],
+        [
+         1,
+         0.041
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Metro Lines",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#040708",
+       "colors": [
+        "#040708",
+        "#b0b1b4",
+        "#dfe3e3",
+        "#5a5d63",
+        "#898c92",
+        "#404347"
+       ],
+       "width_px": 192,
+       "height_px": 60,
+       "thickness_px": 4,
+       "ink_fraction": 0.16,
+       "profile": [
+        [
+         1,
+         0.839
+        ],
+        [
+         0,
+         0.047
+        ],
+        [
+         1,
+         0.031
+        ],
+        [
+         0,
+         0.036
+        ],
+        [
+         1,
+         0.047
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Existing Roads",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "symbol",
+       "color": "#06070d",
+       "colors": [
+        "#65696c",
+        "#dcdfe2",
+        "#06070d",
+        "#7f8387",
+        "#b0b4b7",
+        "#767a7d"
+       ],
+       "width_px": 194,
+       "height_px": 60,
+       "thickness_px": 10,
+       "ink_fraction": 0.22,
+       "profile": [
+        [
+         1,
+         0.84
+        ],
+        [
+         0,
+         0.057
+        ],
+        [
+         1,
+         0.103
+        ]
+       ]
+      }
+     },
+     {
+      "label": "RMP 2015 Roads",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "symbol",
+       "color": "#faab07",
+       "colors": [
+        "#fdda92",
+        "#faab07",
+        "#08070c",
+        "#dda936",
+        "#dee2e6",
+        "#e8fcff"
+       ],
+       "width_px": 199,
+       "height_px": 60,
+       "thickness_px": 22,
+       "ink_fraction": 0.41,
+       "profile": [
+        [
+         1,
+         0.834
+        ],
+        [
+         0,
+         0.065
+        ],
+        [
+         1,
+         0.045
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.005
+        ],
+        [
+         0,
+         0.015
+        ],
+        [
+         1,
+         0.03
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Proposed Roads",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "symbol",
+       "color": "#8e1bb2",
+       "colors": [
+        "#e7c1f4",
+        "#dfbbea",
+        "#8e1bb2",
+        "#050908",
+        "#9730b6",
+        "#8c178e"
+       ],
+       "width_px": 199,
+       "height_px": 60,
+       "thickness_px": 20,
+       "ink_fraction": 0.4,
+       "profile": [
+        [
+         1,
+         0.774
+        ],
+        [
+         0,
+         0.111
+        ],
+        [
+         1,
+         0.03
+        ],
+        [
+         0,
+         0.04
+        ],
+        [
+         1,
+         0.045
+        ]
+       ]
+      }
+     },
+     {
+      "label": "Ring Road",
+      "agree": "6/6",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#0f7bdb",
+       "colors": [
+        "#0770d1",
+        "#0f7bdb",
+        "#106cc3",
+        "#e6fbff",
+        "#b7d7ff",
+        "#040807"
+       ],
+       "width_px": 187,
+       "height_px": 60,
+       "thickness_px": 27,
+       "ink_fraction": 0.39,
+       "profile": [
+        [
+         1,
+         0.16
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.016
+        ],
+        [
+         0,
+         0.011
+        ],
+        [
+         1,
+         0.358
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.011
+        ],
+        [
+         0,
+         0.027
+        ],
+        [
+         1,
+         0.289
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.011
+        ],
+        [
+         0,
+         0.07
+        ],
+        [
+         1,
+         0.032
+        ]
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "id": "bda-boundaries-roads",
+   "title": "BDA grid sheets legend (1:5000)",
+   "columns": [
+    [
+     {
+      "label": "BANGALORE DEVELOPMENT AUTHORITY ( LPA) BOUNDARY",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#b671a6",
+       "colors": [
+        "#d28dbd",
+        "#e3b0d5",
+        "#bf84b2",
+        "#df97ce",
+        "#f5bbe5",
+        "#b671a6"
+       ],
+       "width_px": 190,
+       "height_px": 9,
+       "thickness_px": 7,
+       "ink_fraction": 0.4,
+       "profile": [
+        [
+         1,
+         0.011
+        ],
+        [
+         0,
+         0.216
+        ],
+        [
+         1,
+         0.126
+        ],
+        [
+         0,
+         0.032
+        ],
+        [
+         1,
+         0.111
+        ],
+        [
+         0,
+         0.063
+        ],
+        [
+         1,
+         0.116
+        ],
+        [
+         0,
+         0.032
+        ],
+        [
+         1,
+         0.116
+        ],
+        [
+         0,
+         0.053
+        ],
+        [
+         1,
+         0.126
+        ]
+       ]
+      }
+     },
+     {
+      "label": "VILLAGE BOUNDARY",
+      "swatch": {
+       "kind": "outline",
+       "color": "#141615",
+       "colors": [
+        "#141615",
+        "#adadad",
+        "#3a3e3b",
+        "#959595",
+        "#595b5a"
+       ],
+       "width_px": 196,
+       "height_px": 26,
+       "thickness_px": 25,
+       "ink_fraction": 0.04,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.184
+        ],
+        [
+         1,
+         0.026
+        ],
+        [
+         0,
+         0.75
+        ],
+        [
+         1,
+         0.026
+        ]
+       ]
+      }
+     },
+     {
+      "label": "GBA BOUNDARY",
+      "swatch": {
+       "kind": "outline",
+       "color": "#f7c066",
+       "colors": [
+        "#ffdaaf",
+        "#bbbbbb",
+        "#f7c066",
+        "#f6ce88",
+        "#8d8d8d",
+        "#f9bf7f"
+       ],
+       "width_px": 196,
+       "height_px": 44,
+       "thickness_px": 32,
+       "ink_fraction": 0.06,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.184
+        ],
+        [
+         1,
+         0.031
+        ],
+        [
+         0,
+         0.745
+        ],
+        [
+         1,
+         0.026
+        ]
+       ]
+      }
+     },
+     {
+      "label": "BMICAPA BOUNDARY",
+      "swatch": {
+       "kind": "outline",
+       "color": "#949494",
+       "colors": [
+        "#cf8ec0",
+        "#bf87b7",
+        "#b2b2b2",
+        "#949494",
+        "#deacd2",
+        "#b572ac"
+       ],
+       "width_px": 198,
+       "height_px": 44,
+       "thickness_px": 44,
+       "ink_fraction": 0.04,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.187
+        ],
+        [
+         1,
+         0.02
+        ],
+        [
+         0,
+         0.758
+        ],
+        [
+         1,
+         0.02
+        ]
+       ]
+      }
+     },
+     {
+      "label": "NATIONAL HIGHWAY",
+      "swatch": {
+       "kind": "line",
+       "color": "#fce138",
+       "colors": [
+        "#fce138",
+        "#fef460",
+        "#fff6b6",
+        "#f6e65e",
+        "#faea8e",
+        "#fef44a"
+       ],
+       "width_px": 197,
+       "height_px": 17,
+       "thickness_px": 15,
+       "ink_fraction": 0.73,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.208
+        ],
+        [
+         1,
+         0.782
+        ]
+       ]
+      }
+     },
+     {
+      "label": "STATE HIGHWAY",
+      "swatch": {
+       "kind": "line",
+       "color": "#728f5e",
+       "colors": [
+        "#8a9463",
+        "#95a46f",
+        "#a7ae88",
+        "#99a780",
+        "#728f5e",
+        "#969b7c"
+       ],
+       "width_px": 194,
+       "height_px": 14,
+       "thickness_px": 13,
+       "ink_fraction": 0.77,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.201
+        ],
+        [
+         1,
+         0.789
+        ]
+       ]
+      }
+     },
+     {
+      "label": "MAJOR DISTRICT ROAD",
+      "swatch": {
+       "kind": "line",
+       "color": "#f56d6b",
+       "colors": [
+        "#e66964",
+        "#fd8581",
+        "#e78d8f",
+        "#f56d6b",
+        "#fcb9bd",
+        "#fc7c72"
+       ],
+       "width_px": 201,
+       "height_px": 13,
+       "thickness_px": 12,
+       "ink_fraction": 0.73,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.179
+        ],
+        [
+         1,
+         0.811
+        ]
+       ]
+      }
+     },
+     {
+      "label": "PERIPHERAL RING ROAD",
+      "swatch": {
+       "kind": "line",
+       "color": "#bc746b",
+       "colors": [
+        "#d28c82",
+        "#cf8475",
+        "#c38780",
+        "#c27d72",
+        "#e2bab5",
+        "#bc746b"
+       ],
+       "width_px": 205,
+       "height_px": 19,
+       "thickness_px": 17,
+       "ink_fraction": 0.75,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.166
+        ],
+        [
+         1,
+         0.824
+        ]
+       ]
+      }
+     },
+     {
+      "label": "PROPOSED ROAD",
+      "swatch": {
+       "kind": "fill",
+       "color": "#a9a5a3",
+       "colors": [
+        "#c2b8b6",
+        "#cac0be",
+        "#898483"
+       ],
+       "width_px": 197,
+       "height_px": 44,
+       "thickness_px": 44,
+       "ink_fraction": 0.8,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.188
+        ],
+        [
+         1,
+         0.797
+        ]
+       ]
+      }
+     },
+     {
+      "label": "EXISTING ROAD",
+      "swatch": {
+       "kind": "dashed",
+       "color": "#c6c2bc",
+       "colors": [
+        "#cecac5",
+        "#cac6c1",
+        "#c6c2bc",
+        "#cbc7c8"
+       ],
+       "width_px": 202,
+       "height_px": 8,
+       "thickness_px": 6,
+       "ink_fraction": 0.23,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.609
+        ],
+        [
+         1,
+         0.03
+        ],
+        [
+         0,
+         0.089
+        ],
+        [
+         1,
+         0.262
+        ]
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "id": "road-width",
+   "title": "Proposed road width (BDA)",
+   "columns": [
+    [
+     {
+      "label": "60.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#899865",
+       "colors": [
+        "#899865",
+        "#97a370",
+        "#a7ae82",
+        "#99a67c",
+        "#a4a773",
+        "#bdc2a6"
+       ],
+       "width_px": 205,
+       "height_px": 16,
+       "thickness_px": 14,
+       "ink_fraction": 0.72,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.166
+        ],
+        [
+         1,
+         0.82
+        ]
+       ]
+      }
+     },
+     {
+      "label": "45.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#df4ba6",
+       "colors": [
+        "#e55cb0",
+        "#f765bb",
+        "#df4ba6",
+        "#e58ac0",
+        "#f7afdd"
+       ],
+       "width_px": 207,
+       "height_px": 15,
+       "thickness_px": 13,
+       "ink_fraction": 0.72,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.159
+        ],
+        [
+         1,
+         0.831
+        ]
+       ]
+      }
+     },
+     {
+      "label": "36.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#829bd2",
+       "colors": [
+        "#b7b7e2",
+        "#d1bfe5",
+        "#91a7da",
+        "#d8c3f4",
+        "#b6bff4",
+        "#829bd2"
+       ],
+       "width_px": 206,
+       "height_px": 12,
+       "thickness_px": 9,
+       "ink_fraction": 0.52,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.165
+        ],
+        [
+         1,
+         0.398
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.024
+        ],
+        [
+         0,
+         0.034
+        ],
+        [
+         1,
+         0.019
+        ],
+        [
+         0,
+         0.044
+        ],
+        [
+         1,
+         0.005
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.039
+        ],
+        [
+         0,
+         0.015
+        ],
+        [
+         1,
+         0.233
+        ]
+       ]
+      }
+     },
+     {
+      "label": "30.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#9bddab",
+       "colors": [
+        "#d4eab9",
+        "#e5f5bf",
+        "#b6e2b3",
+        "#f3fbc2",
+        "#9bddab"
+       ],
+       "width_px": 206,
+       "height_px": 13,
+       "thickness_px": 10,
+       "ink_fraction": 0.59,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.165
+        ],
+        [
+         1,
+         0.451
+        ],
+        [
+         0,
+         0.01
+        ],
+        [
+         1,
+         0.019
+        ],
+        [
+         0,
+         0.01
+        ],
+        [
+         1,
+         0.024
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.005
+        ],
+        [
+         1,
+         0.272
+        ]
+       ]
+      }
+     },
+     {
+      "label": "25.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#f48971",
+       "colors": [
+        "#e9836c",
+        "#f9957e",
+        "#f48971",
+        "#e39483",
+        "#e9a595",
+        "#f5c1bb"
+       ],
+       "width_px": 206,
+       "height_px": 33,
+       "thickness_px": 11,
+       "ink_fraction": 0.29,
+       "profile": [
+        [
+         1,
+         0.015
+        ],
+        [
+         0,
+         0.16
+        ],
+        [
+         1,
+         0.825
+        ]
+       ]
+      }
+     },
+     {
+      "label": "18.3 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#fef689",
+       "colors": [
+        "#fef689",
+        "#fcf5b1",
+        "#f9ed8d",
+        "#f6eea7"
+       ],
+       "width_px": 205,
+       "height_px": 11,
+       "thickness_px": 10,
+       "ink_fraction": 0.78,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.166
+        ],
+        [
+         1,
+         0.824
+        ]
+       ]
+      }
+     },
+     {
+      "label": "15.0 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#cb9b70",
+       "colors": [
+        "#be9369",
+        "#cda887",
+        "#bb9c7e",
+        "#e5d0bd",
+        "#c2a386",
+        "#cb9b70"
+       ],
+       "width_px": 205,
+       "height_px": 10,
+       "thickness_px": 10,
+       "ink_fraction": 0.79,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.171
+        ],
+        [
+         1,
+         0.82
+        ]
+       ]
+      }
+     },
+     {
+      "label": "12.2 M",
+      "swatch": {
+       "kind": "line",
+       "color": "#f6c166",
+       "colors": [
+        "#f6c166",
+        "#ffd8ae",
+        "#fbd194",
+        "#edb864",
+        "#facc72",
+        "#f4c57f"
+       ],
+       "width_px": 203,
+       "height_px": 8,
+       "thickness_px": 7,
+       "ink_fraction": 0.72,
+       "profile": [
+        [
+         1,
+         0.01
+        ],
+        [
+         0,
+         0.172
+        ],
+        [
+         1,
+         0.818
+        ]
+       ]
+      }
+     }
+    ]
+   ]
+  }
+ ],
+ "notes": [
+  "NOTE : WITH RESPECT TO PERIPHERAL RING ROAD, ALIGNMENT AS NOTIFIED FOR LAND ACQUISITION SHALL BE FINAL AND WILL PREVAIL"
+ ],
+ "overview": {
+  "pdf": "proposedcirculationplanblr-bda.pdf",
+  "title": "PROPOSED CIRCULATION PATTERN FOR LOCAL PLANNING AREA OF BENGALURU",
+  "scale": "1:65,000",
+  "authority": "BANGALORE DEVELOPMENT AUTHORITY BENGALURU",
+  "note": "NOTE : WITH RESPECT TO PERIPHERAL RING ROAD, ALIGNMENT AS NOTIFIED FOR LAND ACQUISITION SHALL BE FINAL AND WILL PREVAIL"
+ },
+ "bda_grid": {
+  "pdf": "Proposed_Circulation_Pattern_Grid-01_1791793497796_e248f82b.pdf",
+  "scale": "1:5000"
+ },
+ "grid_numbers": {
+  "per_sheet": {
+   "bccc-p02": 1,
+   "bccc-p03": 2,
+   "bccc-p04": 3,
+   "bccc-p05": 4,
+   "bccc-p06": 5,
+   "bccc-p07": 6,
+   "bccc-p08": 7,
+   "bccc-p09": 8,
+   "bccc-p10": 9,
+   "becc-p02": 1,
+   "becc-p03": 2,
+   "becc-p04": 3,
+   "becc-p05": 4,
+   "becc-p06": 5,
+   "becc-p07": 6,
+   "becc-p08": 7,
+   "becc-p09": 8,
+   "becc-p10": 9,
+   "becc-p11": 10,
+   "becc-p12": 11,
+   "bncc-p02": 1,
+   "bncc-p03": 2,
+   "bncc-p04": 3,
+   "bncc-p05": 4,
+   "bncc-p06": 5,
+   "bncc-p07": 6,
+   "bncc-p08": 7,
+   "bncc-p09": 8,
+   "bncc-p10": 9,
+   "bncc-p11": 10,
+   "bncc-p12": 11,
+   "bncc-p13": 12,
+   "bscc-p02": 1,
+   "bscc-p03": 2,
+   "bscc-p04": 3,
+   "bscc-p05": 4,
+   "bscc-p06": 5,
+   "bscc-p07": 6,
+   "bscc-p08": 7,
+   "bscc-p09": 8,
+   "bscc-p10": 9,
+   "bscc-p11": 10,
+   "bscc-p12": 11,
+   "bwcc-p02": 1,
+   "bwcc-p03": 2,
+   "bwcc-p04": 3,
+   "bwcc-p05": 4,
+   "bwcc-p06": 5,
+   "bwcc-p07": 6,
+   "bwcc-p08": 7,
+   "bwcc-p09": 8,
+   "bwcc-p10": 9,
+   "bwcc-p11": 10,
+   "bwcc-p12": 11
+  },
+  "note": "grid_no is read from each sheet's title block; 'inferred' = page + per-corporation offset"
+ }
+}

@@ -1,0 +1,26 @@
+{
+  "title": "GBA Road Circulation Plan",
+  "pmtiles_base": "https://maps.blrtransit.com/gba-road-2026/",
+  "center": [
+    77.5946,
+    12.9716
+  ],
+  "zoom": 10.5,
+  "search_viewbox": [
+    77.2,
+    13.4,
+    77.95,
+    12.6
+  ],
+  "tilesets": [
+    "tileset.json",
+    "gba-tileset.zip"
+  ],
+  "legend": [
+    "legend.json"
+  ],
+  "boundaries": [
+    "boundaries.json",
+    "boundaries.geojson"
+  ]
+}
