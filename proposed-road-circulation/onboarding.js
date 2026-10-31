@@ -5,7 +5,9 @@
  *   highlight       what to spotlight, one of:
  *                     "#cssSelector"                          an element on the page
  *                     { rect: [x, y, w, h] }                  fractions of the viewport, e.g. [0.3, 0.3, 0.4, 0.3]
- *                     { bbox: [west, south, east, north] }    a geographic box on the map
+ *                     { bbox: [west, south, east, north] }    a geographic box on the map; the map is fitted to it
+ *                                                             (unless map.center is set) and the spotlight follows the map
+ *                                                             at any screen size. Elements are scrolled into view first.
  *                     null                                    no spotlight (dim only)
  *   map             { center: [lon, lat], zoom, basemap: "osm"|"sat"|"none", opacity: 0..1 } – moves the map first
  *                   (when a step has `point` but no map.center, the map pans to the point, or fits several points)
@@ -18,10 +20,13 @@
 const HELP_INTRO = {
   title: "Understanding the Road Circulation Plan",
   html: `
-    <p>A <b>circulation plan</b> is a structured spatial and traffic management scheme that organizes how people, vehicles and goods move through a city or district. It is part of the city’s master plan and includes a comprehensive road network of major and minor roads and highways, traffic circulation patterns to meet present and future needs, and proposals for network improvements.</p>
-    <p>The GBA notified the Road Circulation Map on <b>October 12, 2026</b> under Section 12(1)(b) of the KTCP Act, inviting suggestions and objections under Section 13(1). Section 12(1) specifies the contents of the city’s Master Plan; Section 13(1) provides for receiving public comments before final approval. The Road Circulation Map is one component of that Master Plan.</p>
-    <p>The maps can be inspected at all five city corporation offices and online: on this dashboard, on the OpenCity dataset page, and on the respective government websites for BDA and GBA.</p>
-    <p><b>BDA and GBA are taking feedback via email and letters until the first week of December.</b></p>`,
+    <p>A <b>circulation plan</b> is a structured spatial and traffic management scheme that organizes how people, vehicles and goods move through a city or district. It is part of the city’s master plan and includes a comprehensive road network of major and minor roads and highways, traffic circulation patterns to meet present and future needs, and proposals for network improvements. <b>Use this tool to explore and provide feedback on the road circulation plan for Bengaluru.</b></p>
+    <p><button class="btn" id="helpMore" aria-expanded="false" aria-controls="helpMoreBody">Read more</button></p>
+    <div id="helpMoreBody" hidden>
+    <p>The GBA <a href="https://updates.bbmp.gov.in/v1/api/file/545332106240-GO%20Order%20Gazette.pdf" target="_blank" rel="noopener">notified</a> the Road Circulation Map on <b>October 12, 2026</b> under Section 12(1)(b) of the <a href="https://dpal.karnataka.gov.in/storage/pdf-files/11%20of%201963%20(E).pdf" target="_blank" rel="noopener">KTCP Act</a>, inviting suggestions and objections under Section 13(1). Section 12(1) specifies the contents of the city’s Master Plan; Section 13(1) provides for receiving public comments before final approval. The Road Circulation Map is one component of that Master Plan.</p>
+    <p>The maps can be inspected at all five city corporation offices and online: on this dashboard, on the <a href="https://data.opencity.in/dataset/road-circulation-plan-for-bengaluru" target="_blank" rel="noopener">OpenCity dataset page</a>, and on the respective government websites for <a href="https://bdakarnataka.in/departments?sectionKey=town-planning&amp;sectionName=Town%20Planning&amp;subSectionId=s_de24f18d-ba69-45cd-8dd5-c1377a7881d5" target="_blank" rel="noopener">BDA</a> and <a href="https://updates.bbmp.gov.in/public" target="_blank" rel="noopener">GBA</a>.</p>
+    <p><b>BDA and GBA are taking feedback via email and letters until the first week of December.</b></p>
+    </div>`,
 };
 
 const HELP_STEPS = [
@@ -38,8 +43,8 @@ const HELP_STEPS = [
     map: { basemap: "sat", opacity: 0.6 } },
   { title: "4 · Spot conflicts",
     text: "Look for proposed alignments that cut through built-up areas, lakes, parks or other conflicts.",
-    highlight: { rect: [0.35, 0.3, 0.3, 0.3] }, panel: null,
-    map: { center: [77.54136, 12.86320], zoom: 16, basemap: "sat", opacity: 0.6 } },
+    highlight: { bbox: [77.5402, 12.8621, 77.5425, 12.8643] }, panel: null,
+    map: { basemap: "sat", opacity: 0.6 } },
   { title: "5 · Click a point",
     text: "Click anywhere on the map to get information about that point: the sheet overlay, grid number, corporation and source.",
     highlight: "#card", point: [77.5946, 12.9716], card: "top" },
@@ -74,9 +79,15 @@ const HELP_SEEN_KEY = "gba-help-seen";
   const markSeen = () => { try { localStorage.setItem(HELP_SEEN_KEY, "1"); } catch (e) {} };
 
   /* intro popup */
-  $h("helpBody").innerHTML = HELP_INTRO.html +
-    "<h3>Before you write</h3><ul>" + HELP_TIPS.map(t => "<li>" + t + "</li>").join("") + "</ul>";
+  $h("helpBody").innerHTML = HELP_INTRO.html;
+  $h("helpMoreBody").insertAdjacentHTML("beforeend",       // the tips sit inside the collapsed "Read more" section
+    "<h3>Before you write</h3><ul>" + HELP_TIPS.map(t => "<li>" + t + "</li>").join("") + "</ul>");
   $h("helpTitle").textContent = HELP_INTRO.title;
+  $h("helpMore").onclick = () => {
+    const hid = $h("helpMoreBody").hidden = !$h("helpMoreBody").hidden;
+    $h("helpMore").textContent = hid ? "Read more" : "Show less";
+    $h("helpMore").setAttribute("aria-expanded", String(!hid));
+  };
   const openHelp = () => { $h("help").hidden = false; $h("bHelp").classList.add("on"); $h("helpGo").focus(); };
   const closeHelp = () => { $h("help").hidden = true; $h("bHelp").classList.remove("on"); markSeen(); };
   $h("bHelp").onclick = () => ($h("help").hidden ? openHelp() : closeHelp());
@@ -107,10 +118,24 @@ const HELP_SEEN_KEY = "gba-help-seen";
     return null;
   }
 
+  function scrollToHighlight(h) {                       // bring DOM targets into view (scrollable panels / small screens)
+    if (typeof h !== "string" && !Array.isArray(h)) return;
+    const el = [].concat(h).map(q => document.querySelector(q)).find(e => e && !e.hidden && e.getClientRects().length);
+    if (el) el.scrollIntoView({ block: "center", inline: "nearest" });
+  }
+
   function place() {
     const s = HELP_STEPS[i]; if (!s) return;
+    scrollToHighlight(s.highlight);
     const r = rectOf(s.highlight), pad = 6;
     if (r) {
+      if (fromPage) {                                    // first highlight of the tour: start from the whole page and shrink onto the target
+        fromPage = false;
+        Object.assign(spot.style, { display: "block", transition: "none", left: "0px", top: "0px", width: innerWidth + "px", height: innerHeight + "px" });
+        spot.getBoundingClientRect();                    // commit the full-page box before animating
+        spot.style.transition = "all .7s ease";
+        setTimeout(() => { spot.style.transition = ""; }, 750);
+      }
       Object.assign(spot.style, { display: "block", left: r.x - pad + "px", top: r.y - pad + "px", width: r.w + 2 * pad + "px", height: r.h + 2 * pad + "px" });
       tour.classList.remove("nohl");
     } else { spot.style.display = "none"; tour.classList.add("nohl"); }
@@ -144,6 +169,11 @@ const HELP_SEEN_KEY = "gba-help-seen";
       }
     }
     const m = s.map;
+    if (s.highlight && s.highlight.bbox && !(m && m.center)) {   // fit the geographic highlight, leaving room for the step card
+      const [w, so, e, n] = s.highlight.bbox, wide = innerWidth > 620;
+      map.fitBounds([[w, so], [e, n]], { duration: 0, maxZoom: 18,
+        padding: wide ? { top: 80, bottom: 80, left: 80, right: 440 } : { top: 80, bottom: Math.round(innerHeight * 0.45), left: 30, right: 30 } });
+    }
     if (m) {
       if (m.basemap) setBase(m.basemap);
       if (m.opacity != null) { gOp = m.opacity; $h("gop").value = m.opacity; order.forEach(applyVisibility); }
@@ -163,10 +193,14 @@ const HELP_SEEN_KEY = "gba-help-seen";
     requestAnimationFrame(() => requestAnimationFrame(place));   // wait for panels/card to lay out
     map.once("moveend", place);
   }
+  const follow = () => { if (i >= 0 && HELP_STEPS[i].highlight && HELP_STEPS[i].highlight.bbox) place(); };
+  (function hook() { if (nav()) map.on("move", follow); else setTimeout(hook, 300); })();
+  let fromPage = false;                                  // true until the first spotlight of a tour has been drawn
   let before = null;                                     // view/basemap/opacity when the tour began, restored at the end
   function start(n) {
     if (!nav()) return void setTimeout(() => start(n), 300);
     if (!before) before = { center: map.getCenter().toArray(), zoom: map.getZoom(), bearing: map.getBearing(), pitch: map.getPitch(), base: baseKind, op: gOp };
+    fromPage = true; spot.style.display = "none";
     tour.hidden = false; show(n || 0);
   }
   function end() {

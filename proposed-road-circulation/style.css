@@ -174,3 +174,12 @@ a{color:var(--accent)}
 #stepDots i{width:6px;height:6px;border-radius:50%;background:var(--border)} #stepDots i.on{background:var(--accent)}
 @media (max-width:620px){#stepCard{left:12px!important;right:12px;width:auto;transform:none!important}}
 
+
+/* onboarding step card: OpenCity grey with black text */
+#stepCard{--oc-grey:#c1c1c1;background:var(--oc-grey);border-color:#000;color:#000}
+#stepCard .hint{color:#000}
+#stepCard a{color:#000;text-decoration:underline}
+#stepCard .btn{background:rgba(255,255,255,.45);border-color:#000;color:#000}
+#stepCard .btn:hover{background:rgba(255,255,255,.75);border-color:#000}
+#stepCard .btn.primary{background:#000;border-color:#000;color:#fff}
+#stepDots i{background:rgba(0,0,0,.25)} #stepDots i.on{background:#000}
