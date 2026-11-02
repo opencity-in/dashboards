@@ -18,14 +18,22 @@
  *   card            "top" | "bottom" – where the step card sits (default: auto, opposite the spotlight)
  */
 const HELP_INTRO = {
-  title: "Understanding the Road Circulation Plan",
+  title: "Proposed Road Circulation Map - Bengaluru",
   html: `
-    <p>A <b>circulation plan</b> is a structured spatial and traffic management scheme that organizes how people, vehicles and goods move through a city or district. It is part of the city’s master plan and includes a comprehensive road network of major and minor roads and highways, traffic circulation patterns to meet present and future needs, and proposals for network improvements. <b>Use this tool to explore and provide feedback on the road circulation plan for Bengaluru.</b></p>
+    <p>The government has notified Road Circulation Maps inviting suggestions from the public before the final approval. This is an important step in designing mobility solutions for Bengaluru.</p><p>You can use this tool to explore the maps shared by GBA and BDA and share your feedback on email. </p>
     <p><button class="btn" id="helpMore" aria-expanded="false" aria-controls="helpMoreBody">Read more</button></p>
     <div id="helpMoreBody" hidden>
-    <p>The GBA <a href="https://updates.bbmp.gov.in/v1/api/file/545332106240-GO%20Order%20Gazette.pdf" target="_blank" rel="noopener">notified</a> the Road Circulation Map on <b>October 12, 2026</b> under Section 12(1)(b) of the <a href="https://dpal.karnataka.gov.in/storage/pdf-files/11%20of%201963%20(E).pdf" target="_blank" rel="noopener">KTCP Act</a>, inviting suggestions and objections under Section 13(1). Section 12(1) specifies the contents of the city’s Master Plan; Section 13(1) provides for receiving public comments before final approval. The Road Circulation Map is one component of that Master Plan.</p>
-    <p>The maps can be inspected at all five city corporation offices and online: on this dashboard, on the <a href="https://data.opencity.in/dataset/road-circulation-plan-for-bengaluru" target="_blank" rel="noopener">OpenCity dataset page</a>, and on the respective government websites for <a href="https://bdakarnataka.in/departments?sectionKey=town-planning&amp;sectionName=Town%20Planning&amp;subSectionId=s_de24f18d-ba69-45cd-8dd5-c1377a7881d5" target="_blank" rel="noopener">BDA</a> and <a href="https://updates.bbmp.gov.in/public" target="_blank" rel="noopener">GBA</a>.</p>
-    <p><b>BDA and GBA are taking feedback via email and letters until the first week of December.</b></p>
+    <b>What is a Road Circulation Map?</b>
+    <p>A circulation plan is a structured spatial and traffic management scheme that organizes how people, vehicles, and goods move through a city or specific urban district. It forms part of the city’s master plan and includes a comprehensive road network comprising major and minor roads and highways, along with traffic circulation patterns to meet present and future transportation needs and proposals for network improvements.</p>
+    <b>What can you do with this tool?</b>
+    <ul>
+        <li>Locate your area on the relevant grid and study proposed/existing roads around you. Check which proposed roads already exist on the ground. Identify alignments that cut through builtup areas, lakes, parks or other conflicts. Note mobility gaps: congestion points, unsafe stretches, poor connectivity to public transport</li>
+        <li>Write your suggestions/objections clearly, with specific locations and requests. State whether each point is an objection, a suggestion, or a request for clarity (e.g. existing vs new roads, rationale for new roads). Add evidence if possible – Photos, maps and location details of conflicts or ground conditions</li>
+        <li>Send feedback based on the jurisdiction you fall under — GBA (erstwhile BBMP area) or BDA (surrounding area)</li>
+    </ul>
+    <b>Government Notifications</b>
+    <p>The Greater Bengaluru Authority (GBA) notified the Road Circulation Map on October 12, 2026, inviting suggestions and objections The Road Circulation Map forms one of the components of the Master Plan under this statutory framework. The Road Circulation Maps can be inspected at all five city corporation offices and online, and written representations go to the Office of the Chief Town Planner, GBA Head Office, NR Square, Bengaluru – 560002 (in person, registered post, or email to gba.masterplan@gmail.com). Deadline: Dec 11, 2026 GBA</p>
+    <p>Bangalore Development Authority (BDA), which covers the surrounding jurisdiction, has its maps online and accepts submissions through its Town Planner Member (bdarmp2041@gmail.com). Deadline: Dec 8th, 2026</p>
     </div>`,
 };
 
@@ -61,14 +69,14 @@ const HELP_STEPS = [
     point: [77.6858, 12.8288] },
 ];
 
-const HELP_TIPS = [
-  "Write your suggestions or objections clearly, with specific requests relevant to the locations.",
-  "Note mobility gaps you experience: congestion points, unsafe stretches, poor bus/metro feeder access.",
-  "State whether each point is an <b>objection</b>, a <b>suggestion</b>, or a <b>request for clarity</b> (e.g. existing vs new roads, rationale for new roads).",
-  "Add evidence: attach photos, maps and details of conflicts or ground conditions.",
-  "The plan is based on ~2007 data. Point out where proposed roads already exist, conflict with built area or lakes, or no longer match ground conditions, and ask for clarity on existing vs. newly proposed roads.",
-  "Bring in the public transport angle: connectivity to bus/metro, access to employment centres, and whether the network works with, not against, public transport.",
-];
+//const HELP_TIPS = [
+//  "Write your suggestions or objections clearly, with specific requests relevant to the locations.",
+//  "Note mobility gaps you experience: congestion points, unsafe stretches, poor bus/metro feeder access.",
+//  "State whether each point is an <b>objection</b>, a <b>suggestion</b>, or a <b>request for clarity</b> (e.g. existing vs new roads, rationale for new roads).",
+//  "Add evidence: attach photos, maps and details of conflicts or ground conditions.",
+//  "The plan is based on ~2007 data. Point out where proposed roads already exist, conflict with built area or lakes, or no longer match ground conditions, and ask for clarity on existing vs. newly proposed roads.",
+//  "Bring in the public transport angle: connectivity to bus/metro, access to employment centres, and whether the network works with, not against, public transport.",
+//];
 
 const HELP_SEEN_KEY = "gba-help-seen";
 
@@ -80,8 +88,6 @@ const HELP_SEEN_KEY = "gba-help-seen";
 
   /* intro popup */
   $h("helpBody").innerHTML = HELP_INTRO.html;
-  $h("helpMoreBody").insertAdjacentHTML("beforeend",       // the tips sit inside the collapsed "Read more" section
-    "<h3>Before you write</h3><ul>" + HELP_TIPS.map(t => "<li>" + t + "</li>").join("") + "</ul>");
   $h("helpTitle").textContent = HELP_INTRO.title;
   $h("helpMore").onclick = () => {
     const hid = $h("helpMoreBody").hidden = !$h("helpMoreBody").hidden;
