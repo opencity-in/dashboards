@@ -322,7 +322,7 @@ const AUTH = {
   BDA: { name: "BDA", to: "bdarmp2041@gmail.com", until: new Date(2026, 11, 9), untilText: "8th December 2026",
     subject: "Suggestion / Objection on Road Circulation Network to be implemented in the Local Planning Area of the Bangalore Development Authority",
     intro: "According to the notification put out by the Bangalore Development Authority, No. BDA/TPM/277807/2026-27/2505, citizens may put out their suggestions or objections via email to this email address. Please consider the following my submission.",
-    where: () => "Authority: Bangalore Development Authority (BDA)", sign: ["<YOUR NAME>", "<YOUR ADDRESS>", "<YOUR MOBILE>"] }
+    where: () => "Authority: Bangalore Development Authority (BDA)", sign: ["<YOUR NAME>"] }
 };
 const authOf = p => (p.ids.length ? (T[p.ids[0]].s.authority || "GBA") : (p.corp === "BDA" ? "BDA" : "GBA"));
 const sname = id => (T[id] && T[id].s.authority === "BDA" && T[id].s.grid_no != null) ? "BDA Grid " + T[id].s.grid_no : id;      // BDA scans are one page per grid: show the grid, not 'p1'
@@ -420,11 +420,46 @@ function mailText(forUrl, pts) {
   L.push("Thanks,", ...(as.length > 1 ? AUTH.BDA.sign : A.sign));
   return L.join(forUrl ? "\r\n" : "\n");
 }
+const PUBLIC_CC = "public-feedback@oorvani.in";
+const CC_NOTE = "This email is by default copied to our id: " + PUBLIC_CC + " - We will use the information to collate and synthesise the feedback, removing all personal information, and publish the summary. If you do not want to us to receive a copy of your feedback, please remove this id from the cc field.";
+/* BDA: no point details (they go on the official form); body just asks the sender to attach it */
+const bdaMailUrl = () => {
+  const A = AUTH.BDA, body = [A.intro, "", "<attach your feedback form>", "", "Thanks,", ...A.sign].join("\r\n");
+  return "mailto:" + A.to + "?cc=" + PUBLIC_CC + "&subject=" + encodeURIComponent(A.subject) + "&body=" + encodeURIComponent(body);
+};
+/* disclaimer: hover (mouse) = tooltip above the button; tap (touch) = popup, then continue. A click after a shown tooltip just proceeds. */
+let ccTip = null;
+function hideTip() { if (ccTip) { ccTip.remove(); ccTip = null; } }
+function showTip(btn) {
+  hideTip(); ccTip = document.createElement("div"); ccTip.className = "cctip"; ccTip.textContent = CC_NOTE; document.body.appendChild(ccTip);
+  const r = btn.getBoundingClientRect(), w = ccTip.offsetWidth, h = ccTip.offsetHeight;
+  ccTip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+  ccTip.style.top = Math.max(8, r.top - h - 8) + "px";
+}
+function ccPopup(go) {
+  const d = document.createElement("div"); d.className = "scrim"; d.style.zIndex = 30;
+  d.innerHTML = '<div class="dlg float"><div class="dhead"><h3>Before you send</h3><button class="x" aria-label="Close">✕</button></div><p style="margin:10px 0">' + esc(CC_NOTE) + '</p><div class="dfoot"><button class="btn" data-c="no">Cancel</button><button class="btn primary" data-c="go">Open email draft</button></div></div>';
+  document.body.appendChild(d);
+  const close = () => d.remove();
+  d.onclick = e => { if (e.target === d) close(); };
+  d.querySelector(".x").onclick = d.querySelector('[data-c="no"]').onclick = close;
+  d.querySelector('[data-c="go"]').onclick = () => { close(); go(); };
+}
+function ccButton(btn, url) {
+  if (!btn) return;
+  btn.onmouseenter = () => showTip(btn); btn.onmouseleave = hideTip; btn.onblur = hideTip;
+  btn.onclick = e => {
+    e.preventDefault();
+    if (btn._touch) { btn._touch = false; hideTip(); ccPopup(() => (location.href = url())); }
+    else { hideTip(); location.href = url(); }
+  };
+  btn.onpointerdown = e => { btn._touch = e.pointerType === "touch" || e.pointerType === "pen"; };
+}
 const mailtoUrl = pts => {
   const as = authsOf(pts), A = AUTH[as[0]];
   const subject = as.length > 1 ? "Suggestion / Objection on Road Circulation Network to be implemented in the Local Planning Areas of the Greater Bengaluru Authority and the Bangalore Development Authority" : A.subject;
   const to = as.includes("GBA") ? AUTH.GBA.to : A.to;               // mixed GBA + BDA: to GBA, BDA in CC
-  return "mailto:" + to + "?" + (as.length > 1 ? "cc=" + AUTH.BDA.to + "&" : "") + "subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(mailText(true, pts));
+  return "mailto:" + to + "?cc=" + (as.length > 1 ? AUTH.BDA.to + "," : "") + PUBLIC_CC + "&" + "subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(mailText(true, pts));
 };
 function renderCard() {
   const card = $("card"), p = P[act];
@@ -454,11 +489,11 @@ function renderCard() {
       '<button class="btn" data-a="hide">' + (t.vis ? "Hide" : "Show") + '</button>' +
       '<label class="hint" style="display:flex;gap:6px;align-items:center">Opacity <input type="range" min="0" max="1" step="0.01" value="' + t.op + '"></label>') + '</div>' : '') +
     (mailOpen(au) ? '<div class="sub2">' + (au === "BDA" ? "Submit to BDA" : "Email your suggestion or objection") + '</div>' +
-    '<div class="acts">' + (au === "BDA" ? '<a class="btn primary" data-a="bdaform" href="bda-feedback-form.pdf" download="BDA-suggestions-form.pdf">Download Suggestions Form</a>'
+    '<div class="acts">' + (au === "BDA" ? '<a class="btn primary" data-a="bdaform" href="bda-feedback-form.pdf" download="BDA-suggestions-form.pdf">Download Suggestions Form</a><a class="btn primary" data-a="bdamail" href="#">Draft email</a>'
       : '<a class="btn primary" data-a="mail1" href="#">Email this point</a>') +
       (canMailAll ? '<a class="btn primary" data-a="mailall" href="#">Email all points (' + same.length + ')</a>' : '') +
       (au === "GBA" ? '<button class="btn" data-a="copy">Copy text</button>' : '') + '</div>' +
-    '<div class="hint" style="margin-top:6px">' + (au === "BDA" ? 'BDA takes comments on its official form: download the blank form, fill and sign it, and hand it in or email it to ' + AUTH.BDA.to + '. ' : 'Open a draft email to send to GBA. Add your suggestions or objections within the email. ') +
+    '<div class="hint" style="margin-top:6px">' + (au === "BDA" ? 'BDA takes comments on its official form: download the blank form, fill and sign it, and hand it in, or use Draft email and attach the filled form (sent to ' + AUTH.BDA.to + '). ' : 'Open a draft email to send to GBA. Add your suggestions or objections within the email. ') +
       (canMailAll && same.some(q => authOf(q) === "BDA") ? '“Email all points” goes to GBA with BDA in CC. ' : '') + 'Deadline ' + AUTH[au].untilText + '.</div>' : '');
   card.querySelector(".x").onclick = clearSelection;
   card.querySelectorAll("[data-p]").forEach(b => (b.onclick = () => { act = +b.dataset.p; addMode = false; afterPointChange(); }));
@@ -468,8 +503,7 @@ function renderCard() {
   if (q("solo")) q("solo").onclick = () => toggleSolo(id);
   if (q("hide")) q("hide").onclick = () => { t.vis = !t.vis; applyVisibility(id); renderList(); renderCard(); };
   const rg = card.querySelector("input[type=range]"); if (rg) rg.oninput = () => { t.op = +rg.value; applyVisibility(id); };
-  if (q("mail1")) q("mail1").onclick = e => { e.preventDefault(); location.href = mailtoUrl([p]); };
-  if (q("mailall")) q("mailall").onclick = e => { e.preventDefault(); location.href = mailtoUrl(same); };
+  ccButton(q("mail1"), () => mailtoUrl([p])); ccButton(q("mailall"), () => mailtoUrl(same)); ccButton(q("bdamail"), bdaMailUrl);
   if (q("copy")) q("copy").onclick = async () => {
     const txt = "To: " + AUTH[au].to + "\nSubject: " + AUTH[au].subject + "\n\n" + mailText(false, [p]);
     try { await navigator.clipboard.writeText(txt); status("Email text copied."); } catch (x) { status("Couldn’t copy; use the email button."); }

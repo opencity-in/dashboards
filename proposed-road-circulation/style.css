@@ -183,3 +183,5 @@ a{color:var(--accent)}
 #stepCard .btn:hover{background:rgba(255,255,255,.75);border-color:#000}
 #stepCard .btn.primary{background:#000;border-color:#000;color:#fff}
 #stepDots i{background:rgba(0,0,0,.25)} #stepDots i.on{background:#000}
+
+.cctip{position:fixed;z-index:40;width:min(320px,calc(100vw - 16px));padding:8px 10px;border-radius:8px;background:var(--surface-solid);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow);font-size:12px;line-height:1.4;pointer-events:none}

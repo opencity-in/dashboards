@@ -33,7 +33,8 @@ const HELP_INTRO = {
     </ul>
     <b>Government Notifications</b>
     <p>The Greater Bengaluru Authority (GBA) notified the Road Circulation Map on October 12, 2026, inviting suggestions and objections The Road Circulation Map forms one of the components of the Master Plan under this statutory framework. The Road Circulation Maps can be inspected at all five city corporation offices and online, and written representations go to the Office of the Chief Town Planner, GBA Head Office, NR Square, Bengaluru – 560002 (in person, registered post, or email to gba.masterplan@gmail.com). Deadline: Dec 11, 2026 GBA</p>
-    <p>Bangalore Development Authority (BDA), which covers the surrounding jurisdiction, has its maps online and accepts submissions through its Town Planner Member (bdarmp2041@gmail.com). Deadline: Dec 8th, 2026</p>
+    <p>Bangalore Development Authority (BDA), which covers the surrounding jurisdiction, has its maps online and accepts submissions through its Town Planner Member (bdarmp2041@gmail.com). Deadline: Dec 8th, 2026</p><br>
+    <p><a href="https://citizenmatters.in/bengalurus-road-circulation-plans-have-your-say-to-fix-the-citys-mobility-problems/" target="_blank">Click here</a> for more details about the proposal and the feedback process.</p>
     </div>`,
 };
 
